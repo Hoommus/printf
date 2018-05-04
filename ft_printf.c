@@ -6,30 +6,56 @@
 /*   By: vtarasiu <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/01 12:15:28 by vtarasiu          #+#    #+#             */
-/*   Updated: 2018/05/03 18:16:45 by vtarasiu         ###   ########.fr       */
+/*   Updated: 2018/05/04 18:46:07 by vtarasiu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
 
+t_conv	*find_flags(char *str, t_conv *conv)
+{
+	int		i;
+
+	i = 0;
+	while (str[i])
+	{
+		conv->alt_form = str[i] == '#' ? '#' : conv->alt_form;
+		conv->pad_dir = str[i] == '-' ? '-' : conv->pad_dir;
+		conv->zero_padding = str[i] == '0' ? '0' : conv->zero_padding;
+		conv->space = str[i] == ' ' ? ' ' : conv->space;
+		conv->sign = str[i] == '+' ? '+' : conv->sign;
+		conv->groups = str[i] == '\'' ? '\'' : conv->groups;
+		conv->long_afeg = str[i] == 'L' ? 'L' : conv->long_afeg;
+		conv->groups = str[i] == '\'' ? '\'' : conv->groups;
+		conv->groups = str[i] == '\'' ? '\'' : conv->groups;
+		if (str[i] == '.')
+			conv->precision = ft_atoi(str + i + 1);
+		if (ft_isdigit(str[i]) && str[i - 1] != '.')
+			conv->min_width = ft_atoi(str + i);
+		i++;
+	}
+}
+
 t_conv	*resolve(char *str, va_list arg)
 {
+	t_conv	*new;
 
+	new = create_empty();
+	find_flags(str, new);
+	return NULL;
 }
 
 void	bufferize(char *s, long long len)
 {
-	static unsigned char	buffer[g_pb_size];
+	static unsigned char	*buffer = NULL;
 	static unsigned long	i;
-	unsigned long			j;
 
-	j = 0;
+	buffer = buffer == NULL ? (unsigned char *)ft_strnew(g_pb_size) : buffer;
+	if (s == NULL && len == -1)
+		free(buffer);
 	len = len < 0 ? ft_strlen(s) : len;
-	while (i < g_pb_size)
-	{
+	while (i < g_pb_size && len--)
 		buffer[i++] = (unsigned char)*s++;
-		len--;
-	}
 	if (i == g_pb_size)
 	{
 		write(1, buffer, g_pb_size);
@@ -59,9 +85,8 @@ int		ft_printf(const char *restrict format, ...)
 			copy += percent - copy;
 		}
 		bufferize((conv = resolve(percent, list))->res, -1);
-		//*******************//
-		free(conv);
-		//*******************//
+		copy += conv->format_offset;
+		free_conv(&conv);
 		copy++;
 	}
 	va_end(list);
@@ -81,4 +106,5 @@ int		ft_printf(const char *restrict format, ...)
 	va_end(ap);
 	va_end(ap2);
 	*/
+	return (0);
 }
