@@ -11,11 +11,3 @@
 /* ************************************************************************** */
 
 #include "ft_printf.h"
-
-int		has_flag(char c, struct s_conv *self)
-{
-	if (ft_strchr(self->flags, c))
-		return (1);
-	else
-		return (0);
-}

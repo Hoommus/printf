@@ -1,23 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strlen.c                                        :+:      :+:    :+:   */
+/*   ft_nbrlen.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: vtarasiu <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/03/23 17:04:03 by vtarasiu          #+#    #+#             */
-/*   Updated: 2018/03/23 18:02:56 by vtarasiu         ###   ########.fr       */
+/*   Created: 2018/05/05 14:49:03 by vtarasiu          #+#    #+#             */
+/*   Updated: 2018/05/05 14:49:03 by vtarasiu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-size_t	ft_strlen(char *str)
+int		ft_nbrlen(long long nbr)
 {
-	unsigned long	i;
+	int		i;
 
-	i = 0;
-	while (str && str[i])
+	i = 1;
+	while ((nbr = nbr / 10) != 0)
 		i++;
 	return (i);
 }

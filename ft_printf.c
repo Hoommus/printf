@@ -6,43 +6,91 @@
 /*   By: vtarasiu <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/01 12:15:28 by vtarasiu          #+#    #+#             */
-/*   Updated: 2018/05/04 18:46:07 by vtarasiu         ###   ########.fr       */
+/*   Updated: 2018/05/05 15:04:22 by vtarasiu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
 
-t_conv	*find_flags(char *str, t_conv *conv)
+int		find_flags(char *str, t_conv *conv)
 {
 	int		i;
 
 	i = 0;
-	while (str[i])
+	while ((!ft_isalpha(str[i]) || str[i] == 'L'))
 	{
 		conv->alt_form = str[i] == '#' ? '#' : conv->alt_form;
 		conv->pad_dir = str[i] == '-' ? '-' : conv->pad_dir;
 		conv->zero_padding = str[i] == '0' ? '0' : conv->zero_padding;
 		conv->space = str[i] == ' ' ? ' ' : conv->space;
 		conv->sign = str[i] == '+' ? '+' : conv->sign;
-		conv->groups = str[i] == '\'' ? '\'' : conv->groups;
+		conv->apostrophe = str[i] == '\'' ? '\'' : conv->apostrophe;
 		conv->long_afeg = str[i] == 'L' ? 'L' : conv->long_afeg;
-		conv->groups = str[i] == '\'' ? '\'' : conv->groups;
-		conv->groups = str[i] == '\'' ? '\'' : conv->groups;
-		if (str[i] == '.')
-			conv->precision = ft_atoi(str + i + 1);
 		if (ft_isdigit(str[i]) && str[i - 1] != '.')
-			conv->min_width = ft_atoi(str + i);
+        {
+            conv->min_width = ft_atoi(str + i);
+			i += ft_nbrlen(conv->min_width);
+        }
+		if (str[i] == '.')
+		{
+			conv->precision = ft_atoi(str + i + 1);
+			i += ft_nbrlen(conv->precision);
+		}
 		i++;
 	}
+	return (i);
 }
 
-t_conv	*resolve(char *str, va_list arg)
+int		guess_convertion(char *str, t_conv *conv)
 {
-	t_conv	*new;
+	if (ft_strchr(CONVERSIONS, *str) != 0)
+	{
+		conv->conv = *str;
+		return (1);
+	}
+	return (0);
+}
 
+char	*set_modifier(char *str, t_conv *conv)
+{
+	if (ft_strnstr(str, "ll", 2))
+	{
+		conv->modifier[0] = 'l';
+		conv->modifier[1] = 'l';
+	}
+	else if (ft_strnstr(str, "hh", 2))
+	{
+		conv->modifier[0] = 'h';
+		conv->modifier[1] = 'h';
+	}
+	else if (ft_strnstr(str, "h", 1))
+		conv->modifier[0] = 'h';
+	else if (ft_strnstr(str, "l", 1))
+		conv->modifier[0] = 'l';
+	else if (ft_strnstr(str, "j", 1))
+		conv->modifier[0] = 'j';
+	else if (ft_strnstr(str, "t", 1))
+		conv->modifier[0] = 't';
+	else if (ft_strnstr(str, "z", 1))
+		conv->modifier[0] = 'z';
+	else
+		return (NULL);
+	return (conv->modifier);
+}
+
+//t_conv	*resolve(char *str, va_list arg)
+t_conv	*resolve(char *str)
+{
+	t_conv			*new;
+	char			*copy;
+
+	copy = str;
 	new = create_empty();
-	find_flags(str, new);
-	return NULL;
+	str += find_flags(str, new) - 1;
+	str += ft_strlen(set_modifier(str, new));
+	str += guess_convertion(str, new);
+	new->format_offset = str < copy ? copy - str : str - copy;
+	return (new);
 }
 
 void	bufferize(char *s, long long len)
@@ -84,7 +132,7 @@ int		ft_printf(const char *restrict format, ...)
 			bufferize(copy, percent - copy);
 			copy += percent - copy;
 		}
-		bufferize((conv = resolve(percent, list))->res, -1);
+		bufferize((conv = resolve(percent/*, list*/))->res, -1);
 		copy += conv->format_offset;
 		free_conv(&conv);
 		copy++;

@@ -19,8 +19,13 @@ t_conv	*create_empty(void)
 	new = (t_conv *)malloc(sizeof(t_conv));
 	if (new == NULL)
 		return (NULL);
-	new->flags = ft_strnew(FLAGS_SIZE + 1);
-	new->conv = NULL;
+	new->modifier[1] = '8';
+	new->min_width = -1;
+	new->precision = -1;
+	new->next_arg = '8';
+	new->long_afeg = '8';
+	new->pad_dir = '8';
+	new->conv = '8';
 	new->res = NULL;
 	new->format_offset = 0;
 	return (new);
@@ -30,21 +35,7 @@ void	free_conv(t_conv **conv)
 {
 	if (conv == NULL || *conv == NULL)
 		return ;
-	free((*conv)->conv);
 	free((*conv)->res);
 	free(*conv);
 	*conv = NULL;
-}
-
-int		add_flag(char flag, t_conv *conv)
-{
-	int i;
-
-	i = 0;
-	while (conv->flags[i++])
-		;
-	while (!has_flag(flag, conv))
-	{
-
-	}
 }
