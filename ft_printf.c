@@ -12,6 +12,9 @@
 
 #include "ft_printf.h"
 
+/*
+** Returns (i - 1) because
+*/
 int		find_flags(char *str, t_conv *conv)
 {
 	int		i;
@@ -19,26 +22,26 @@ int		find_flags(char *str, t_conv *conv)
 	i = 0;
 	while ((!ft_isalpha(str[i]) || str[i] == 'L'))
 	{
-		conv->alt_form = str[i] == '#' ? '#' : conv->alt_form;
-		conv->pad_dir = str[i] == '-' ? '-' : conv->pad_dir;
-		conv->zero_padding = str[i] == '0' ? '0' : conv->zero_padding;
-		conv->space = str[i] == ' ' ? ' ' : conv->space;
-		conv->sign = str[i] == '+' ? '+' : conv->sign;
+		conv->zero_padding = str[i] == '0' ? 'z' : conv->zero_padding;
 		conv->apostrophe = str[i] == '\'' ? '\'' : conv->apostrophe;
 		conv->long_afeg = str[i] == 'L' ? 'L' : conv->long_afeg;
-		if (ft_isdigit(str[i]) && str[i - 1] != '.')
+		conv->alt_form = str[i] == '#' ? '#' : conv->alt_form;
+		conv->pad_dir = str[i] == '-' ? '-' : conv->pad_dir;
+		conv->space = str[i] == ' ' ? ' ' : conv->space;
+		conv->sign = str[i] == '+' ? '+' : conv->sign;
+		if (ft_isdigit(str[i]) && str[i] != '0' && str[i - 1] != '.')
         {
             conv->min_width = ft_atoi(str + i);
 			i += ft_nbrlen(conv->min_width);
         }
-		if (str[i] == '.')
+		if (str[i] == '.' && conv->precision == -1)
 		{
 			conv->precision = ft_atoi(str + i + 1);
 			i += ft_nbrlen(conv->precision);
 		}
 		i++;
 	}
-	return (i);
+	return (i - 1);
 }
 
 int		guess_convertion(char *str, t_conv *conv)
@@ -86,10 +89,11 @@ t_conv	*resolve(char *str)
 
 	copy = str;
 	new = create_empty();
-	str += find_flags(str, new) - 1;
+	str += find_flags(str, new);
 	str += ft_strlen(set_modifier(str, new));
 	str += guess_convertion(str, new);
 	new->format_offset = str < copy ? copy - str : str - copy;
+
 	return (new);
 }
 

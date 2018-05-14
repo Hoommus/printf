@@ -19,15 +19,17 @@ t_conv	*create_empty(void)
 	new = (t_conv *)malloc(sizeof(t_conv));
 	if (new == NULL)
 		return (NULL);
-	new->modifier[1] = '8';
+	new->format_offset = 0;
+	new->zero_padding = 0;
+	new->modifier[1] = 0;
+	new->modifier[0] = 0;
 	new->min_width = -1;
 	new->precision = -1;
-	new->next_arg = '8';
-	new->long_afeg = '8';
-	new->pad_dir = '8';
-	new->conv = '8';
+	new->long_afeg = 0;
+	new->next_arg = 0;
+	new->pad_dir = '+';
+	new->conv = 0;
 	new->res = NULL;
-	new->format_offset = 0;
 	return (new);
 }
 

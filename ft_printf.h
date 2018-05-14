@@ -38,8 +38,8 @@ int		ft_printf(const char *restrict format, ...);
 
 typedef struct	s_conv
 {
-	char		alt_form;
 	char		zero_padding;
+	char		alt_form;
 	char		pad_dir;
 	char		space;
 	char		sign;
