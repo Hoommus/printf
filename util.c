@@ -21,8 +21,8 @@ t_conv	*create_empty(void)
 		return (NULL);
 	new->format_offset = 0;
 	new->zero_padding = 0;
-	new->modifier[1] = 0;
-	new->modifier[0] = 0;
+	new->mod[1] = 0;
+	new->mod[0] = 0;
 	new->min_width = -1;
 	new->precision = -1;
 	new->long_afeg = 0;

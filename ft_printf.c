@@ -6,7 +6,7 @@
 /*   By: vtarasiu <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/01 12:15:28 by vtarasiu          #+#    #+#             */
-/*   Updated: 2018/05/05 15:04:22 by vtarasiu         ###   ########.fr       */
+/*   Updated: 2018/05/14 18:00:24 by vtarasiu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,31 +58,38 @@ char	*set_modifier(char *str, t_conv *conv)
 {
 	if (ft_strnstr(str, "ll", 2))
 	{
-		conv->modifier[0] = 'l';
-		conv->modifier[1] = 'l';
+		conv->mod[0] = 'l';
+		conv->mod[1] = 'l';
 	}
 	else if (ft_strnstr(str, "hh", 2))
 	{
-		conv->modifier[0] = 'h';
-		conv->modifier[1] = 'h';
+		conv->mod[0] = 'h';
+		conv->mod[1] = 'h';
 	}
 	else if (ft_strnstr(str, "h", 1))
-		conv->modifier[0] = 'h';
+		conv->mod[0] = 'h';
 	else if (ft_strnstr(str, "l", 1))
-		conv->modifier[0] = 'l';
+		conv->mod[0] = 'l';
 	else if (ft_strnstr(str, "j", 1))
-		conv->modifier[0] = 'j';
+		conv->mod[0] = 'j';
 	else if (ft_strnstr(str, "t", 1))
-		conv->modifier[0] = 't';
+		conv->mod[0] = 't';
 	else if (ft_strnstr(str, "z", 1))
-		conv->modifier[0] = 'z';
+		conv->mod[0] = 'z';
 	else
 		return (NULL);
-	return (conv->modifier);
+	return (conv->mod);
 }
 
-//t_conv	*resolve(char *str, va_list arg)
-t_conv	*resolve(char *str)
+
+
+void	eval(t_conv *conv, va_list arg)
+{
+	if (conv->conv == 'd' || conv->conv == 'i')
+		eval_di(conv, arg);
+}
+
+t_conv	*resolve(char *str, va_list arg)
 {
 	t_conv			*new;
 	char			*copy;
@@ -93,7 +100,7 @@ t_conv	*resolve(char *str)
 	str += ft_strlen(set_modifier(str, new));
 	str += guess_convertion(str, new);
 	new->format_offset = str < copy ? copy - str : str - copy;
-
+	eval(new, arg);
 	return (new);
 }
 
@@ -136,7 +143,7 @@ int		ft_printf(const char *restrict format, ...)
 			bufferize(copy, percent - copy);
 			copy += percent - copy;
 		}
-		bufferize((conv = resolve(percent/*, list*/))->res, -1);
+		bufferize((conv = resolve(percent, list))->res, -1);
 		copy += conv->format_offset;
 		free_conv(&conv);
 		copy++;
