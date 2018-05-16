@@ -6,7 +6,7 @@
 /*   By: vtarasiu <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/04 12:59:36 by vtarasiu          #+#    #+#             */
-/*   Updated: 2018/05/04 17:40:20 by vtarasiu         ###   ########.fr       */
+/*   Updated: 2018/05/15 16:51:05 by vtarasiu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,4 +40,9 @@ void	free_conv(t_conv **conv)
 	free((*conv)->res);
 	free(*conv);
 	*conv = NULL;
+}
+
+char	*apply_width(t_conv *conv)
+{
+
 }
