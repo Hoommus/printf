@@ -6,7 +6,7 @@
 /*   By: vtarasiu <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/01 12:16:11 by vtarasiu          #+#    #+#             */
-/*   Updated: 2018/05/15 16:59:33 by vtarasiu         ###   ########.fr       */
+/*   Updated: 2018/05/18 16:35:57 by vtarasiu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@
 
 # define CONVERSIONS "diouxXDOUaAeEfFgGcCsSpn%"
 # define NUMERIC "dDioOuUxX"
+# define NUMERIC_EXT "dDioOuUxXaAeEfFgG"
 # define ITOA_UPPER "0123456789ABCDEF"
 # define ITOA_LOWER "0123456789abcdef"
 # define ABS(a) (a < 0 ? -(a) : a)
@@ -43,6 +44,9 @@ int				ft_printf(const char *restrict format, ...);
 ** mod  = generic mod
 */
 
+/*
+** Make these memory-efficient by making bitwise flags in integer
+*/
 typedef struct	s_conv
 {
 	char		zero_padding;

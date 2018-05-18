@@ -6,7 +6,7 @@
 /*   By: vtarasiu <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/01 12:15:28 by vtarasiu          #+#    #+#             */
-/*   Updated: 2018/05/15 16:36:46 by vtarasiu         ###   ########.fr       */
+/*   Updated: 2018/05/18 17:27:29 by vtarasiu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,16 @@ void	bufferize(char *s, long long len)
 	}
 	if (len != 0)
 		bufferize(s, len);
+}
+
+/*
+** Function resolves $ and * modifiers
+*/
+void	preprocess(char *format, va_list args)
+{
+/*
+** STUB
+*/
 }
 
 int		ft_printf(const char *restrict format, ...)

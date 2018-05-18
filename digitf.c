@@ -6,45 +6,81 @@
 /*   By: vtarasiu <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/14 17:43:24 by vtarasiu          #+#    #+#             */
-/*   Updated: 2018/05/16 17:22:07 by vtarasiu         ###   ########.fr       */
+/*   Updated: 2018/05/18 19:59:07 by vtarasiu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
 
-char	*apply_precision(t_conv *conv, char *str, int len)
+char	*apply_generic_precision(t_conv *conv, char **str, size_t len)
 {
-	int		i;
-	char	pad;
+	char	*new;
+	size_t	i;
 
-	pad = ' ';
-	if (conv->zero_padding != 0 && conv->conv != 'n')
-		pad = '0';
+	i = 0;
+	new = *str;
+	if (len < conv->precision && ft_strchr(NUMERIC, conv->conv))
+	{
+		new = ft_strnew((size_t)conv->precision);
+		while (i < conv->precision - len)
+			new[i++] = '0';
+		ft_strcat(new, *str);
+		ft_strdel(str);
+	}
+	else if (len > conv->precision && conv->conv == 's' || conv->conv == 'S')
+	{
+		new = ft_strsub(*str, 0, (size_t)conv->precision);
+		ft_strdel(str);
+	}
+	return (new);
+}
 
+char	*apply_generic_width(t_conv *conv, char **str, size_t len)
+{
+	char	*new;
+	char	space;
+	size_t	i;
+
+	i = 0;
+	new = *str;
+	space = ' ';
+	if (conv->zero_padding != 0 && ft_strchr(NUMERIC_EXT, conv->conv) != NULL
+		&& conv->precision < 0)
+		space = '0';
+	if (len < conv->min_width)
+	{
+		new = ft_strnew((size_t)conv->min_width);
+		while (i < conv->min_width - len)
+			new[i++] = space;
+		ft_strcat(new, *str);
+		ft_strdel(str);
+	}
+	else if (len > conv->precision && conv->conv == 's' || conv->conv == 'S')
+	{
+		new = ft_strsub(*str, 0, (size_t)conv->precision);
+		ft_strdel(str);
+	}
+	return (new);
 }
 
 char	*itoxx(t_conv *conv, unsigned long long nbr)
 {
-	char	*swap;
-	char	*new;
-	int		i;
-	size_t	len;
+	char *new;
+	char *swap;
+	size_t len;
 
-	i = 0;
 	new = utos_base(nbr, 16, conv->conv == 'x' ? 0 : 1);
 	len = ft_strlen(new);
-	len = len < conv->precision ? (size_t)conv->precision : len;
-	if (conv->alt_form != 0 && nbr != 0)
+	new = apply_generic_precision(conv, &new, len);
+	if (conv->precision >= 0 && conv->alt_form != 0)
 	{
-		swap = ft_strnew(2 + len);
-		swap[0] = '0';
-		swap[1] = conv->conv == 'x' ? 'x' : 'X';
-		i = 2;
-		while (i < conv->precision - len)
-			swap[i++] = '0';
-		ft_strcat(swap, new);
+		swap = ft_strjoin(conv->conv == 'x' ? "0x" : "0X", new);
 		free(new);
 		new = swap;
+	}
+	else if (conv->min_width >= 0)
+	{
+
 	}
 	return (new);
 }
