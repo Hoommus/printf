@@ -24,6 +24,7 @@ size_t	nbr_len(long long int nbr, int base)
 		u_nbr = (unsigned long long int)-nbr;
 	if (u_nbr == 0)
 		return (1);
+	u_nbr = (unsigned long long int)nbr;
 	while (u_nbr)
 	{
 		u_nbr /= base;
@@ -47,7 +48,7 @@ char	*utos_base(unsigned long long int nbr, int base, int var)
 	str = ft_strnew(len);
 	if (nbr == 0)
 		str[0] = '0';
-	str[len] = '\0';
+	str[len--] = '\0';
 	while (nbr)
 	{
 		str[len--] = var == 1 ? ITOA_UPPER[nbr % base] : ITOA_LOWER[nbr % base];

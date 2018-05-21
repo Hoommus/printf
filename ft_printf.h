@@ -23,6 +23,7 @@
 # define CONVERSIONS "diouxXDOUaAeEfFgGcCsSpn%"
 # define NUMERIC "dDioOuUxX"
 # define NUMERIC_EXT "dDioOuUxXaAeEfFgG"
+# define FLOATING "aAeEfFgG"
 # define ITOA_UPPER "0123456789ABCDEF"
 # define ITOA_LOWER "0123456789abcdef"
 # define ABS(a) (a < 0 ? -(a) : a)
@@ -89,5 +90,7 @@ char			*itos_base(long long int nbr, int base);
 */
 void			eval_di(t_conv *conv, va_list arg);
 void			eval_uoxx(t_conv *conv, va_list arg);
+char			*itoxx(t_conv *conv, unsigned long long nbr);
+char			*itoo(t_conv *conv, unsigned long long nbr);
 
 #endif

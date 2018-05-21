@@ -51,6 +51,10 @@ int		guess_convertion(char *str, t_conv *conv)
 	return (0);
 }
 
+/*
+** TODO: Remake keeping in mind modifier priority
+*/
+
 char	*set_modifier(char *str, t_conv *conv)
 {
 	if (ft_strnstr(str, "ll", 2))
