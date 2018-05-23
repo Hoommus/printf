@@ -6,7 +6,7 @@
 /*   By: vtarasiu <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/15 16:41:29 by vtarasiu          #+#    #+#             */
-/*   Updated: 2018/05/15 16:44:03 by vtarasiu         ###   ########.fr       */
+/*   Updated: 2018/05/22 17:09:34 by vtarasiu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,10 @@ int		find_flags(char *str, t_conv *conv)
 	return (i - 1);
 }
 
+/*
+** TODO: POSSIBLE BUG ALERT
+*/
+
 int		guess_convertion(char *str, t_conv *conv)
 {
 	if (ft_strchr(CONVERSIONS, *str) != 0)
@@ -51,9 +55,33 @@ int		guess_convertion(char *str, t_conv *conv)
 	return (0);
 }
 
-/*
-** TODO: Remake keeping in mind modifier priority
-*/
+int		set_modifier_bits(char *str, t_conv *conv)
+{
+	int		i;
+
+	i = 0;
+	while (ft_strchr(CONVERSIONS, *str) == NULL)
+	{
+		if (ft_strnstr(str, "ll", 2))
+			conv->modif = conv->modif | 8;
+		else if (ft_strnstr(str, "hh", 2))
+			conv->modif = conv->modif | 1;
+		else if (ft_strnstr(str, "h", 1))
+			conv->modif = conv->modif | 2;
+		else if (ft_strnstr(str, "l", 1))
+			conv->modif = conv->modif | 4;
+		else if (ft_strnstr(str, "j", 1))
+			conv->modif = conv->modif | 16;
+		else if (ft_strnstr(str, "t", 1))
+			conv->modif = conv->modif | 32;
+		else if (ft_strnstr(str, "z", 1))
+			conv->modif = conv->modif | 64;
+		else
+			continue ;
+		i++;
+	}
+	return (i);
+}
 
 char	*set_modifier(char *str, t_conv *conv)
 {

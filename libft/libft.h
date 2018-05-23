@@ -37,7 +37,7 @@ void			*ft_memmove(void *dst, const void *src, size_t len);
 int				ft_memcmp(const void *s1, const void *s2, size_t n);
 size_t			ft_strlen(char *str);
 size_t			ft_strulen(const unsigned char *str);
-size_t			ft_utf_strlen(unsigned char *str);
+size_t			ft_utf_strlen(wchar_t *str);
 char			*ft_strdup(const char *src);
 char			*ft_strcpy(char *dst, const char *src);
 char			*ft_strncpy(char *dst, const char *src, size_t len);
