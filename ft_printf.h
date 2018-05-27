@@ -6,14 +6,14 @@
 /*   By: vtarasiu <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/01 12:16:11 by vtarasiu          #+#    #+#             */
-/*   Updated: 2018/05/23 18:04:25 by vtarasiu         ###   ########.fr       */
+/*   Updated: 2018/05/25 17:50:20 by vtarasiu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef FT_PRINTF_H
 # define FT_PRINTF_H
 
-
+# include <stddef.h>
 # include <limits.h>
 # include <stdarg.h>
 # include <stdlib.h>
@@ -45,7 +45,7 @@ int				ft_printf(const char *restrict format, ...);
 */
 
 /*
-** Make these memory-efficient by making bitwise flags in integer
+** TODO: Make these memory-efficient by making bitwise flags in integer
 */
 typedef struct	s_conv
 {
@@ -89,7 +89,7 @@ char			*itos_base(long long int nbr, int base);
 ** Unicode
 */
 char			*to_unicode(wchar_t codepoint);
-char			*to_unicode_string(wchar_t *s);
+char			*to_unicode_string(wchar_t *string);
 
 /*
 ** Generic
@@ -103,6 +103,9 @@ char			*apply_alt_form_oxx(t_conv *conv, char **str);
 */
 void			eval_di(t_conv *conv, va_list arg);
 void			eval_uoxx(t_conv *conv, va_list arg);
+void			eval_c(t_conv *conv, va_list arg);
+void			eval_s(t_conv *conv, va_list arg);
+void			eval_cs(t_conv *conv, va_list arg);
 char			*itoxx(t_conv *conv, unsigned long long nbr);
 char			*itoo(t_conv *conv, unsigned long long nbr);
 

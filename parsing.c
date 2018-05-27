@@ -22,6 +22,7 @@ int		find_flags(char *str, t_conv *conv)
 		conv->zero_padding = str[i] == '0' ? 'z' : conv->zero_padding;
 		conv->apostrophe = str[i] == '\'' ? '\'' : conv->apostrophe;
 		conv->long_afeg = str[i] == 'L' ? 'L' : conv->long_afeg;
+		conv->next_arg = str[i] == '*' ? 1 : conv->next_arg;
 		conv->alt_form = str[i] == '#' ? '#' : conv->alt_form;
 		conv->pad_dir = str[i] == '-' ? '-' : conv->pad_dir;
 		conv->space = str[i] == ' ' ? ' ' : conv->space;
@@ -48,11 +49,10 @@ int		find_flags(char *str, t_conv *conv)
 int		guess_convertion(char *str, t_conv *conv)
 {
 	if (ft_strchr(CONVERSIONS, *str) != 0)
-	{
 		conv->conv = *str;
-		return (1);
-	}
-	return (0);
+	if (conv->conv == 'C' || conv->conv == 'S')
+		conv->modif = conv->modif | 8;
+	return (conv->conv == NULL ? 0 : 1);
 }
 
 int		set_modifier_bits(char *str, t_conv *conv)

@@ -6,7 +6,7 @@
 /*   By: vtarasiu <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/23 17:43:19 by vtarasiu          #+#    #+#             */
-/*   Updated: 2018/05/03 15:55:25 by vtarasiu         ###   ########.fr       */
+/*   Updated: 2018/05/25 17:41:21 by vtarasiu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,8 @@ void			*ft_memmove(void *dst, const void *src, size_t len);
 int				ft_memcmp(const void *s1, const void *s2, size_t n);
 size_t			ft_strlen(char *str);
 size_t			ft_strulen(const unsigned char *str);
-size_t			ft_utf_strlen(wchar_t *str);
+size_t			ft_wchar_strlen(wchar_t *str);
+size_t			ft_utf_strlen(char *str);
 char			*ft_strdup(const char *src);
 char			*ft_strcpy(char *dst, const char *src);
 char			*ft_strncpy(char *dst, const char *src, size_t len);

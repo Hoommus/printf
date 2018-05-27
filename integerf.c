@@ -6,7 +6,7 @@
 /*   By: vtarasiu <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/14 17:43:24 by vtarasiu          #+#    #+#             */
-/*   Updated: 2018/05/21 19:03:14 by vtarasiu         ###   ########.fr       */
+/*   Updated: 2018/05/25 19:12:32 by vtarasiu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,16 +18,22 @@ char	*itoxx(t_conv *conv, unsigned long long nbr)
 	size_t	len;
 
 	new = utos_base(nbr, 16, conv->conv == 'x' ? 0 : 1);
+	if (nbr == 0)
+	{
+		ft_strdel(&new);
+		new = ft_strnew(1);
+		new[0] = ' ';
+	}
 	len = ft_strlen(new);
 	new = apply_generic_precision(conv, &new, len);
 	if (conv->alt_form != 0 && conv->min_width > -1 && conv->zero_padding != 0)
 	{
 		new = apply_generic_width(conv, &new, len);
-		new = apply_alt_form_oxx(conv, &new);
+		new = nbr != 0 ? apply_alt_form_oxx(conv, &new) : new;
 	}
 	else
 	{
-		new = apply_alt_form_oxx(conv, &new);
+		new = nbr != 0 ? apply_alt_form_oxx(conv, &new) : new;
 		new = apply_generic_width(conv, &new, len);
 	}
 	return (new);
@@ -40,16 +46,17 @@ char	*itoo(t_conv *conv, unsigned long long nbr)
 
 	new = utos_base(nbr, 8, 0);
 	len = ft_strlen(new);
-	new = apply_generic_precision(conv, &new, len);
+	if (conv->alt_form == 0)
+		new = apply_generic_precision(conv, &new, len);
 	if (conv->alt_form != 0 && conv->min_width > -1 && conv->zero_padding != 0)
 	{
-		new = apply_generic_width(conv, &new, len);
 		new = apply_alt_form_oxx(conv, &new);
+		new = apply_generic_width(conv, &new, ft_strlen(new));
 	}
 	else
 	{
 		new = apply_alt_form_oxx(conv, &new);
-		new = apply_generic_width(conv, &new, len);
+		new = apply_generic_width(conv, &new, ft_strlen(new));
 	}
 	return (new);
 }

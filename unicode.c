@@ -46,7 +46,7 @@ char	*to_unicode_string(wchar_t *s)
 	int		i;
 
 	i = 0;
-	str = ft_strnew(ft_utf_strlen(s));
+	str = ft_strnew(ft_wchar_strlen(s));
 	while (s[i])
 	{
 		ft_strcat(str, to_unicode(s[i]));

@@ -1,23 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_utf_strlen.c                                    :+:      :+:    :+:   */
+/*   ft_wchar_strlen.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: vtarasiu <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/05/25 20:07:41 by vtarasiu          #+#    #+#             */
-/*   Updated: 2018/05/25 20:42:35 by vtarasiu         ###   ########.fr       */
+/*   Created: 2018/05/03 15:46:38 by vtarasiu          #+#    #+#             */
+/*   Updated: 2018/05/23 18:10:39 by vtarasiu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include <stddef.h>
 #include "libft.h"
 
 /*
-** Function counts actual number of characters in Unicode string without
-** counting those starting with 0x80 (binary 10xxxxxx)
+** Counts how much space needed to store wchar_t string converted to one-byte
+** char string
 */
 
-size_t	ft_utf_strlen(char *str)
+size_t	ft_wchar_strlen(wchar_t *str)
 {
 	size_t	i;
 	size_t	size;
@@ -26,11 +27,14 @@ size_t	ft_utf_strlen(char *str)
 	size = 0;
 	while (str[i])
 	{
-		while (str[i] & 0x80)
-			i++;
-		if (str[i] == 0)
-			break ;
-		size++;
+		if (str[i] <= 0x7F)
+			size++;
+		else if (str[i] <= 0x7FF)
+			size += 2;
+		else if (str[i] <= 0xFFFF)
+			size += 3;
+		else if (str[i] <= 0x10FFFF)
+			size += 4;
 		i++;
 	}
 	return (size);
