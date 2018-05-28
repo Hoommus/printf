@@ -20,6 +20,8 @@
 # include "libft/libft.h"
 
 # define CONVERSIONS "diouxXDOUaAeEfFgGcCsSpn%"
+# define MODIFIERS "lhjtzq"
+# define FLAGS "0\L*#- +123456789."
 # define NUMERIC "dDioOuUxX"
 # define NUMERIC_EXT "dDioOuUxXaAeEfFgG"
 # define FLOATING "aAeEfFgG"

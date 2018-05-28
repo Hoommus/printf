@@ -45,8 +45,7 @@ char	*apply_generic_width(t_conv *conv, char **str, size_t len)
 		return (*str);
 	i = 0;
 	space = ' ';
-	if (conv->zero_padding != 0 && conv->conv != 'n'
-		&& conv->pad_dir != '-' && !ft_strchr(NUMERIC_EXT, conv->conv))
+	if (conv->zero_padding != 0 && conv->pad_dir != '-' && conv->alt_form == 0)
 		space = '0';
 	new = ft_strnew((size_t)conv->min_width);
 	while (conv->pad_dir != '-' && i < conv->min_width - len)
@@ -80,10 +79,9 @@ char	*apply_alt_form_oxx(t_conv *conv, char **str)
 			*str = ft_strjoin(conv->conv == 'x' ? "0x" : "0X", *str);
 			ft_strdel(&swap);
 		}
-	else if (conv->alt_form && (conv->conv == 'o' || conv->conv == 'O'))
+	else if (conv->alt_form && (conv->conv == 'o' || conv->conv == 'O') && **str != '0')
 	{
-		*str = ft_strlen(*str) >= 2 ? ft_strjoin("0", *str)
-									: ft_strjoin("00", *str);
+		*str = ft_strjoin("0", *str);
 		ft_strdel(&swap);
 	}
 	return (*str);

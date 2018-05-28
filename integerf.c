@@ -46,18 +46,9 @@ char	*itoo(t_conv *conv, unsigned long long nbr)
 
 	new = utos_base(nbr, 8, 0);
 	len = ft_strlen(new);
-	if (conv->alt_form == 0)
-		new = apply_generic_precision(conv, &new, len);
-	if (conv->alt_form != 0 && conv->min_width > -1 && conv->zero_padding != 0)
-	{
+	new = apply_generic_precision(conv, &new, len);
 		new = apply_alt_form_oxx(conv, &new);
 		new = apply_generic_width(conv, &new, ft_strlen(new));
-	}
-	else
-	{
-		new = apply_alt_form_oxx(conv, &new);
-		new = apply_generic_width(conv, &new, ft_strlen(new));
-	}
 	return (new);
 }
 

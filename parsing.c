@@ -17,7 +17,7 @@ int		find_flags(char *str, t_conv *conv)
 	int		i;
 
 	i = 0;
-	while ((!ft_isalpha(str[i]) || str[i] == 'L'))
+	while (ft_strchr(FLAGS, str[i]))
 	{
 		conv->zero_padding = str[i] == '0' ? 'z' : conv->zero_padding;
 		conv->apostrophe = str[i] == '\'' ? '\'' : conv->apostrophe;
@@ -35,11 +35,12 @@ int		find_flags(char *str, t_conv *conv)
 		if (str[i] == '.' && conv->precision == -1)
 		{
 			conv->precision = ft_atoi(str + i + 1);
-			i += ft_nbrlen(conv->precision);
+			if (ft_isdigit(str[i + 1]))
+				i += ft_nbrlen(conv->precision);
 		}
 		i++;
 	}
-	return (i - 1);
+	return (i);
 }
 
 /*
