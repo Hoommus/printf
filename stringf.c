@@ -17,17 +17,21 @@ void	eval_cs(t_conv *conv, va_list arg)
 	char	*str;
 
 	if (conv->conv == 's' || conv->conv == 'S')
-		if (conv->mod[0] == 'l' || conv->conv == 'S')
+	{
+		if (conv->mod == 'l' || conv->conv == 'S')
 			str = to_unicode_string(va_arg(arg, wchar_t *));
 		else
 			str = ft_strdup(va_arg(arg, char *));
+	}
 	else if (conv->conv == 'c' || conv->conv == 'C')
-		if (conv->mod[0] == 'l' || conv->conv == 'C')
+	{
+		if (conv->mod == 'l' || conv->conv == 'C')
 			str = to_unicode((wchar_t)va_arg(arg, long));
 		else
 			str = to_unicode((wchar_t)va_arg(arg, int));
+	}
 	str = apply_generic_precision(conv, &str, ft_strlen(str));
-	str = apply_generic_width(conv, &str, ft_strlen(str));
+	str = apply_generic_width(conv, &str, ft_strlen(str), 0);
 	conv->res = str;
 }
 

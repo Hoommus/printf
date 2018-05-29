@@ -21,7 +21,7 @@
 
 # define CONVERSIONS "diouxXDOUaAeEfFgGcCsSpn%"
 # define MODIFIERS "lhjtzq"
-# define FLAGS "0\L*#- +123456789."
+# define FLAGS "0\\L*#- +123456789."
 # define NUMERIC "dDioOuUxX"
 # define NUMERIC_EXT "dDioOuUxXaAeEfFgG"
 # define FLOATING "aAeEfFgG"
@@ -29,7 +29,8 @@
 # define ITOA_LOWER "0123456789abcdef"
 # define ABS(a) (a < 0 ? -(a) : a)
 
-static size_t	g_pb_size = 128;
+static size_t	g_pb_size = 20;
+static int		g_symbols = 0;
 
 int				ft_printf(const char *restrict format, ...);
 
@@ -59,7 +60,7 @@ typedef struct	s_conv
 	char		apostrophe;
 	char		separator;
 	char		long_afeg;
-	char		mod[2];
+	char		mod;
 	int			modif;
 	long		next_arg;
 	long		precision;
@@ -79,7 +80,7 @@ t_conv			*resolve(char *str, va_list arg);
 */
 int				find_flags(char *str, t_conv *conv);
 int				guess_convertion(char *str, t_conv *conv);
-char			*set_modifier(char *str, t_conv *conv);
+int				set_modifier(char *str, t_conv *conv);
 
 /*
 ** Number-related
@@ -97,7 +98,8 @@ char			*to_unicode_string(wchar_t *string);
 ** Generic
 */
 char			*apply_generic_precision(t_conv *conv, char **str, size_t len);
-char			*apply_generic_width(t_conv *conv, char **str, size_t len);
+char			*apply_generic_width(t_conv *conv, char **str,
+									 size_t len, char c);
 char			*apply_alt_form_oxx(t_conv *conv, char **str);
 
 /*
@@ -105,8 +107,7 @@ char			*apply_alt_form_oxx(t_conv *conv, char **str);
 */
 void			eval_di(t_conv *conv, va_list arg);
 void			eval_uoxx(t_conv *conv, va_list arg);
-void			eval_c(t_conv *conv, va_list arg);
-void			eval_s(t_conv *conv, va_list arg);
+void			eval_p(t_conv *conv, va_list arg);
 void			eval_cs(t_conv *conv, va_list arg);
 char			*itoxx(t_conv *conv, unsigned long long nbr);
 char			*itoo(t_conv *conv, unsigned long long nbr);

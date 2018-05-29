@@ -53,7 +53,7 @@ int		guess_convertion(char *str, t_conv *conv)
 		conv->conv = *str;
 	if (conv->conv == 'C' || conv->conv == 'S')
 		conv->modif = conv->modif | 8;
-	return (conv->conv == NULL ? 0 : 1);
+	return (conv->conv == 0 ? 0 : 1);
 }
 
 int		set_modifier_bits(char *str, t_conv *conv)
@@ -61,22 +61,22 @@ int		set_modifier_bits(char *str, t_conv *conv)
 	int		i;
 
 	i = 0;
-	while (ft_strchr(CONVERSIONS, *str) == NULL)
+	while (ft_strchr(MODIFIERS, *str) != NULL)
 	{
 		if (ft_strnstr(str, "ll", 2))
-			conv->modif = conv->modif | 8;
+			conv->modif |= 8;
 		else if (ft_strnstr(str, "hh", 2))
-			conv->modif = conv->modif | 1;
+			conv->modif |= 1;
 		else if (ft_strnstr(str, "h", 1))
-			conv->modif = conv->modif | 2;
+			conv->modif |= 2;
 		else if (ft_strnstr(str, "l", 1))
-			conv->modif = conv->modif | 4;
+			conv->modif |= 4;
 		else if (ft_strnstr(str, "j", 1))
-			conv->modif = conv->modif | 16;
+			conv->modif |= 16;
 		else if (ft_strnstr(str, "t", 1))
-			conv->modif = conv->modif | 32;
+			conv->modif |= 32;
 		else if (ft_strnstr(str, "z", 1))
-			conv->modif = conv->modif | 64;
+			conv->modif |= 64;
 		else
 			continue ;
 		i++;
@@ -84,29 +84,23 @@ int		set_modifier_bits(char *str, t_conv *conv)
 	return (i);
 }
 
-char	*set_modifier(char *str, t_conv *conv)
+int		set_modifier(char *str, t_conv *conv)
 {
 	if (ft_strnstr(str, "ll", 2))
-	{
-		conv->mod[0] = 'l';
-		conv->mod[1] = 'l';
-	}
+		conv->mod = 'L';
 	else if (ft_strnstr(str, "hh", 2))
-	{
-		conv->mod[0] = 'h';
-		conv->mod[1] = 'h';
-	}
+		conv->mod = 'H';
 	else if (ft_strnstr(str, "h", 1))
-		conv->mod[0] = 'h';
+		conv->mod = 'h';
 	else if (ft_strnstr(str, "l", 1))
-		conv->mod[0] = 'l';
+		conv->mod = 'l';
 	else if (ft_strnstr(str, "j", 1))
-		conv->mod[0] = 'j';
+		conv->mod = 'j';
 	else if (ft_strnstr(str, "t", 1))
-		conv->mod[0] = 't';
+		conv->mod = 't';
 	else if (ft_strnstr(str, "z", 1))
-		conv->mod[0] = 'z';
+		conv->mod = 'z';
 	else
-		return (NULL);
-	return (conv->mod);
+		return (0);
+	return (conv->mod == 'L' || conv->mod == 'H' ? 2 : 1);
 }

@@ -71,7 +71,7 @@ char	*itos_base(long long int nbr, int base)
 	str[len] = '\0';
 	while (nbr)
 	{
-		str[len--] = ITOA_LOWER[ABS(nbr % base)];
+		str[--len] = ITOA_LOWER[ABS(nbr % base)];
 		nbr /= base;
 	}
 	return (str);

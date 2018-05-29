@@ -21,8 +21,7 @@ t_conv	*create_empty(void)
 		return (NULL);
 	new->format_offset = 0;
 	new->zero_padding = 0;
-	new->mod[1] = 0;
-	new->mod[0] = 0;
+	new->mod = 0;
 	new->min_width = -1;
 	new->precision = -1;
 	new->long_afeg = 0;
@@ -40,9 +39,4 @@ void	free_conv(t_conv **conv)
 	free((*conv)->res);
 	free(*conv);
 	*conv = NULL;
-}
-
-char	*apply_width(t_conv *conv)
-{
-
 }

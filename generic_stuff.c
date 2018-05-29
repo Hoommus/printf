@@ -35,7 +35,7 @@ char	*apply_generic_precision(t_conv *conv, char **str, size_t len)
 	return (new);
 }
 
-char	*apply_generic_width(t_conv *conv, char **str, size_t len)
+char	*apply_generic_width(t_conv *conv, char **str, size_t len, char c)
 {
 	char	*new;
 	char	space;
@@ -44,8 +44,8 @@ char	*apply_generic_width(t_conv *conv, char **str, size_t len)
 	if (conv->min_width == -1)
 		return (*str);
 	i = 0;
-	space = ' ';
-	if (conv->zero_padding != 0 && conv->pad_dir != '-' && conv->alt_form == 0)
+	space = (char)(c != 0 ? c : ' ');
+	if (c == 0 && conv->zero_padding != 0 && conv->pad_dir != '-')
 		space = '0';
 	new = ft_strnew((size_t)conv->min_width);
 	while (conv->pad_dir != '-' && i < conv->min_width - len)
@@ -79,12 +79,11 @@ char	*apply_alt_form_oxx(t_conv *conv, char **str)
 			*str = ft_strjoin(conv->conv == 'x' ? "0x" : "0X", *str);
 			ft_strdel(&swap);
 		}
-	else if (conv->alt_form && (conv->conv == 'o' || conv->conv == 'O') && **str != '0')
+	else if (conv->alt_form && (conv->conv == 'o' || conv->conv == 'O')
+							&& **str != '0')
 	{
 		*str = ft_strjoin("0", *str);
 		ft_strdel(&swap);
 	}
 	return (*str);
 }
-
-
