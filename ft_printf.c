@@ -23,6 +23,8 @@ void	eval(t_conv *conv, va_list arg)
 		eval_cs(conv, arg);
 	else if (conv->conv == 'p')
 		eval_p(conv, arg);
+	else if (conv->conv == '%')
+		eval_percent(conv, arg);
 }
 
 /*
@@ -39,8 +41,10 @@ t_conv	*resolve(char *str, va_list arg)
 	str++;
 	str += find_flags(str, conv);
 	str += set_modifier(str, conv);
+	set_modifier_bits(str, conv);
 	str += guess_convertion(str, conv);
-	if (conv->conv == 'D' || conv->conv == 'O' || conv->conv == 'U')
+	if (conv->conv == 'D' || conv->conv == 'O' || conv->conv == 'U'
+		|| conv->conv == 'C' || conv->conv == 'S')
 	{
 		conv->mod = 'l';
 		conv->conv = (char)ft_tolower(conv->conv);

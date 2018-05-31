@@ -45,6 +45,10 @@ char	*to_unicode_string(wchar_t *s)
 	char	*str;
 	int		i;
 
+	if (s == 0)
+		return (ft_strdup("(null)"));
+	else if (*s == 0)
+		return (ft_strdup("\0"));
 	i = 0;
 	str = ft_strnew(ft_wchar_strlen(s));
 	while (s[i])

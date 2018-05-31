@@ -27,9 +27,10 @@ char	*apply_generic_precision(t_conv *conv, char **str, size_t len)
 		ft_strcat(new, *str);
 		ft_strdel(str);
 	}
-	else if (len > conv->precision && (conv->conv == 's' || conv->conv == 'S'))
+	else if (((long long)len) > conv->precision && conv->precision != -1
+			 && (conv->conv == 's' || conv->conv == 'S'))
 	{
-		new = ft_strsub(*str, 0, (size_t)conv->precision);
+		new = ft_strsub(*str, 0, conv->precision < 0 ? ft_strlen(*str) : (size_t)conv->precision);
 		ft_strdel(str);
 	}
 	return (new);
@@ -39,7 +40,7 @@ char	*apply_generic_width(t_conv *conv, char **str, size_t len, char c)
 {
 	char	*new;
 	char	space;
-	size_t	i;
+	long	i;
 
 	if (conv->min_width == -1)
 		return (*str);
@@ -48,7 +49,7 @@ char	*apply_generic_width(t_conv *conv, char **str, size_t len, char c)
 	if (c == 0 && conv->zero_padding != 0 && conv->pad_dir != '-')
 		space = '0';
 	new = ft_strnew((size_t)conv->min_width);
-	while (conv->pad_dir != '-' && i < conv->min_width - len)
+	while (conv->pad_dir != '-' && i < conv->min_width - (long)len)
 		new[i++] = space;
 	ft_strcat(new, *str);
 	i = len;

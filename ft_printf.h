@@ -14,9 +14,9 @@
 # define FT_PRINTF_H
 
 # include <stddef.h>
-# include <limits.h>
 # include <stdarg.h>
 # include <stdlib.h>
+# include <limits.h>
 # include "libft/libft.h"
 
 # define CONVERSIONS "diouxXDOUaAeEfFgGcCsSpn%"
@@ -29,7 +29,7 @@
 # define ITOA_LOWER "0123456789abcdef"
 # define ABS(a) (a < 0 ? -(a) : a)
 
-static size_t	g_pb_size = 20;
+static size_t	g_pb_size = 10;
 static int		g_symbols = 0;
 
 int				ft_printf(const char *restrict format, ...);
@@ -68,6 +68,7 @@ typedef struct	s_conv
 	char		conv;
 	char		*formatted;
 	char		*res;
+	long		res_length;
 	size_t		format_offset;
 }				t_conv;
 
@@ -81,6 +82,7 @@ t_conv			*resolve(char *str, va_list arg);
 int				find_flags(char *str, t_conv *conv);
 int				guess_convertion(char *str, t_conv *conv);
 int				set_modifier(char *str, t_conv *conv);
+int				set_modifier_bits(char *str, t_conv *conv);
 
 /*
 ** Number-related
@@ -109,6 +111,7 @@ void			eval_di(t_conv *conv, va_list arg);
 void			eval_uoxx(t_conv *conv, va_list arg);
 void			eval_p(t_conv *conv, va_list arg);
 void			eval_cs(t_conv *conv, va_list arg);
+void			eval_percent(t_conv *conv, va_list arg);
 char			*itoxx(t_conv *conv, unsigned long long nbr);
 char			*itoo(t_conv *conv, unsigned long long nbr);
 

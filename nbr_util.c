@@ -18,7 +18,7 @@ size_t	nbr_len(long long int nbr, int base)
 	unsigned long long int	u_nbr;
 
 	i = nbr < 0 && base == 10 ? 1 : 0;
-	if (nbr == LONG_LONG_MIN)
+	if (nbr == LLONG_MIN)
 		u_nbr = (unsigned long long int)-(nbr + 1) + 1;
 	else
 		u_nbr = (unsigned long long int)-nbr;

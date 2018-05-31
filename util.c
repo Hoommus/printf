@@ -21,14 +21,16 @@ t_conv	*create_empty(void)
 		return (NULL);
 	new->format_offset = 0;
 	new->zero_padding = 0;
-	new->mod = 0;
+	new->res_length = -1;
 	new->min_width = -1;
 	new->precision = -1;
 	new->long_afeg = 0;
 	new->next_arg = 0;
 	new->pad_dir = '+';
+	new->modif = 0;
 	new->conv = 0;
 	new->res = NULL;
+	new->mod = 0;
 	return (new);
 }
 
