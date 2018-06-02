@@ -37,6 +37,7 @@ OBJ = $(LIB_FILES:.c=.o) $(PRINTF_SRC:.c=.o)
 $(NAME):
 	gcc -c $(LIB_SRC) $(PRINTF_SRC) -std=c99 -Wall -Wextra -Werror \
     && ar rc $(NAME) $(OBJ)
+	make clean
 
 all: $(NAME)
 

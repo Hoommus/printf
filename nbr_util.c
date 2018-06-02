@@ -17,14 +17,13 @@ size_t	nbr_len(long long int nbr, int base)
 	size_t					i;
 	unsigned long long int	u_nbr;
 
-	i = nbr < 0 && base == 10 ? 1 : 0;
+	i = 0;
+	if (nbr == 0)
+		return (1);
 	if (nbr == LLONG_MIN)
 		u_nbr = (unsigned long long int)-(nbr + 1) + 1;
 	else
-		u_nbr = (unsigned long long int)-nbr;
-	if (u_nbr == 0)
-		return (1);
-	u_nbr = (unsigned long long int)nbr;
+		u_nbr = (unsigned long long int)(nbr < 0 ? -nbr : nbr);
 	while (u_nbr)
 	{
 		u_nbr /= base;
@@ -44,7 +43,14 @@ char	*utos_base(unsigned long long int nbr, int base, int var)
 	size_t	len;
 	char	*str;
 
-	len = nbr_len(nbr, base);
+	if (nbr != ULONG_MAX)
+		len = nbr_len(nbr, base);
+	else if (base == 8)
+		len = 22;
+	else if (base == 10)
+		len = 20;
+	else
+		len = 16;
 	str = ft_strnew(len);
 	if (nbr == 0)
 		str[0] = '0';
@@ -62,7 +68,8 @@ char	*itos_base(long long int nbr, int base)
 	size_t	len;
 	char	*str;
 
-	len = nbr_len(nbr, base);
+	len = nbr < 0 && base == 10 ? 1 : 0;
+	len += nbr_len(nbr, base);
 	str = ft_strnew(len);
 	if (base == 10 && nbr < 0)
 		str[0] = '-';

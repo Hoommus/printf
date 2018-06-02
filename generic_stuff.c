@@ -68,16 +68,16 @@ char	*apply_alt_form_oxx(t_conv *conv, char **str)
 	char	*swap;
 
 	swap = *str;
-	if (conv->alt_form && (conv->conv == 'x' || conv->conv == 'X'))
+	if (conv->alt_form && (conv->conv == 'x' || conv->conv == 'X' || conv->conv == 'p'))
 		if (conv->min_width != 0 && ft_strncmp(*str, "00", 2) == 0
 			&& conv->precision <= 0)
 		{
 			(*str)[0] = '0';
-			(*str)[1] = conv->conv == 'x' ? 'x' : 'X';
+			(*str)[1] = conv->conv == 'X' ? 'X' : 'x';
 		}
 		else
 		{
-			*str = ft_strjoin(conv->conv == 'x' ? "0x" : "0X", *str);
+			*str = ft_strjoin(conv->conv == 'X' ? "0X" : "0x", *str);
 			ft_strdel(&swap);
 		}
 	else if (conv->alt_form && (conv->conv == 'o' || conv->conv == 'O')

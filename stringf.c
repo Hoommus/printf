@@ -24,7 +24,7 @@ void	eval_cs(t_conv *conv, va_list arg)
 		else
 		{
 			ar = va_arg(arg, char *);
-			str = ar == NULL ? "(null)" : ft_strdup(ar);
+			str = ar == NULL ? ft_strdup("(null)") : ft_strdup(ar);
 		}
 	}
 	else// if (conv->conv == 'c' || conv->conv == 'C')

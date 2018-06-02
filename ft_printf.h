@@ -31,6 +31,7 @@
 
 static size_t	g_pb_size = 10;
 static int		g_symbols = 0;
+int				g_error;
 
 int				ft_printf(const char *restrict format, ...);
 

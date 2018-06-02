@@ -33,22 +33,27 @@ void	eval(t_conv *conv, va_list arg)
 
 t_conv	*resolve(char *str, va_list arg)
 {
-	t_conv			*conv;
-	char			*copy;
+	t_conv *conv;
+	char *copy;
 
 	copy = str;
 	conv = create_empty();
 	str++;
+	if (ft_strlen(str) == 0)
+		return (conv);
 	str += find_flags(str, conv);
-	str += set_modifier(str, conv);
 	set_modifier_bits(str, conv);
+	str += set_modifier(str, conv);
 	str += guess_convertion(str, conv);
 	if (conv->conv == 'D' || conv->conv == 'O' || conv->conv == 'U'
 		|| conv->conv == 'C' || conv->conv == 'S')
 	{
 		conv->mod = 'l';
+		conv->modif = conv->modif | 8;
 		conv->conv = (char)ft_tolower(conv->conv);
 	}
+	if (conv->conv == 0)
+		g_error = -1;
 	conv->format_offset = str < copy ? copy - str : str - copy;
 	eval(conv, arg);
 	return (conv);
@@ -63,7 +68,8 @@ void	bufferize(char *s, long long len)
 	len = len < 0 ? ft_strlen(s) : len;
 	while (i < g_pb_size && len--)
 	{
-		buffer[i++] = (unsigned char)*s++;
+		buffer[i++] = (unsigned char)*s == 1 ? 0 : *s;
+		s++;
 		g_symbols++;
 	}
 	if (s == NULL && len == -1)
@@ -90,6 +96,7 @@ int		ft_printf(const char *restrict format, ...)
 	char		*percent;
 
 	g_symbols = 0;
+	g_error = 0;
 	while (ft_strlen((char *)format) > g_pb_size * 1.2)
 		g_pb_size <<= 1;
 	va_start(list, format);
@@ -113,5 +120,5 @@ int		ft_printf(const char *restrict format, ...)
 	}
 	bufferize(NULL, -1);
 	va_end(list);
-	return (g_symbols);
+	return (g_error == 0 ? g_symbols : -1);
 }

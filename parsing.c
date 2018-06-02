@@ -61,7 +61,7 @@ int		set_modifier_bits(char *str, t_conv *conv)
 	int		i;
 
 	i = 0;
-	while (ft_strchr(MODIFIERS, *str) != NULL)
+	while (ft_strchr(MODIFIERS, str[i]) != NULL)
 	{
 		if (ft_strnstr(str, "ll", 2))
 			conv->modif |= 8;
