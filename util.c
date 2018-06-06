@@ -6,7 +6,7 @@
 /*   By: vtarasiu <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/04 12:59:36 by vtarasiu          #+#    #+#             */
-/*   Updated: 2018/05/15 16:51:05 by vtarasiu         ###   ########.fr       */
+/*   Updated: 2018/06/06 16:21:43 by vtarasiu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,6 @@ t_conv	*create_empty(void)
 		return (NULL);
 	new->format_offset = 0;
 	new->zero_padding = 0;
-	new->res_length = -1;
 	new->min_width = -1;
 	new->precision = -1;
 	new->long_afeg = 0;
@@ -30,7 +29,6 @@ t_conv	*create_empty(void)
 	new->modif = 0;
 	new->conv = 0;
 	new->res = NULL;
-	new->mod = 0;
 	return (new);
 }
 
@@ -38,7 +36,32 @@ void	free_conv(t_conv **conv)
 {
 	if (conv == NULL || *conv == NULL)
 		return ;
+	ft_bzero(*conv, sizeof(conv));
 	free((*conv)->res);
 	free(*conv);
 	*conv = NULL;
+}
+
+void	find_eval_print(char *format, va_list list)
+{
+	char		*percent;
+	t_conv		*conv;
+
+	while (*format)
+	{
+		percent = ft_strchr(format, '%');
+		if (percent > format)
+		{
+			bufferize(format, percent - format);
+			format += percent - format;
+		}
+		else if (percent == NULL)
+		{
+			bufferize(format, ft_strlen(format));
+			break ;
+		}
+		bufferize((conv = resolve(percent, list))->res, -1);
+		format += conv->format_offset != 0 ? conv->format_offset : 1;
+		free_conv(&conv);
+	}
 }

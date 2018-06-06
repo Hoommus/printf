@@ -19,7 +19,10 @@ int		ft_nbrlen(long long nbr)
 	if (nbr == 0)
 		return (1);
 	i = 0;
-	while ((nbr = nbr / 10) != 0)
+	while (nbr)
+	{
+		nbr /= 10;
 		i++;
+	}
 	return (i);
 }

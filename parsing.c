@@ -6,11 +6,34 @@
 /*   By: vtarasiu <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/15 16:41:29 by vtarasiu          #+#    #+#             */
-/*   Updated: 2018/05/22 17:09:34 by vtarasiu         ###   ########.fr       */
+/*   Updated: 2018/06/06 18:47:20 by vtarasiu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
+
+int		guess_flag(char c, t_conv *conv)
+{
+	if (c == '0')
+		conv->zero_padding = 'z';
+	else if (ft_isdigit(c))
+		return (0);
+	else if (c == '#')
+		conv->alt_form = '#';
+	else if (c == '-')
+		conv->pad_dir = '-';
+	else if (c == ' ')
+		conv->space = ' ';
+	else if (c == '+')
+		conv->sign = '+';
+	else if (c == 'L')
+		conv->long_afeg = 'L';
+	else if (c == '\'')
+		conv->apostrophe = '\'';
+	else
+		return (0);
+	return (1);
+}
 
 int		find_flags(char *str, t_conv *conv)
 {
@@ -19,18 +42,11 @@ int		find_flags(char *str, t_conv *conv)
 	i = 0;
 	while (ft_strchr(FLAGS, str[i]))
 	{
-		conv->zero_padding = str[i] == '0' ? 'z' : conv->zero_padding;
-		conv->apostrophe = str[i] == '\'' ? '\'' : conv->apostrophe;
-		conv->long_afeg = str[i] == 'L' ? 'L' : conv->long_afeg;
-		conv->next_arg = str[i] == '*' ? 1 : conv->next_arg;
-		conv->alt_form = str[i] == '#' ? '#' : conv->alt_form;
-		conv->pad_dir = str[i] == '-' ? '-' : conv->pad_dir;
-		conv->space = str[i] == ' ' ? ' ' : conv->space;
-		conv->sign = str[i] == '+' ? '+' : conv->sign;
+		guess_flag(str[i], conv);
 		if (ft_isdigit(str[i]) && str[i] != '0' && str[i - 1] != '.')
 		{
 			conv->min_width = ft_atoi(str + i);
-			i += ft_nbrlen(conv->min_width);
+			i += ft_nbrlen(conv->min_width) - 1;
 		}
 		if (str[i] == '.' && conv->precision == -1)
 		{
@@ -43,16 +59,16 @@ int		find_flags(char *str, t_conv *conv)
 	return (i);
 }
 
-/*
-** TODO: POSSIBLE BUG ALERT
-*/
-
 int		guess_convertion(char *str, t_conv *conv)
 {
 	if (ft_strchr(CONVERSIONS, *str) != 0)
 		conv->conv = *str;
-	if (conv->conv == 'C' || conv->conv == 'S')
-		conv->modif = conv->modif | 8;
+	if (conv->conv == 'D' || conv->conv == 'O' || conv->conv == 'U'
+		|| conv->conv == 'C' || conv->conv == 'S')
+	{
+		conv->modif = conv->modif | 12;
+		conv->conv = (char)ft_tolower(conv->conv);
+	}
 	return (conv->conv == 0 ? 0 : 1);
 }
 
@@ -64,43 +80,28 @@ int		set_modifier_bits(char *str, t_conv *conv)
 	while (ft_strchr(MODIFIERS, str[i]) != NULL)
 	{
 		if (ft_strnstr(str, "ll", 2))
+		{
 			conv->modif |= 8;
+			i++;
+		}
 		else if (ft_strnstr(str, "hh", 2))
+		{
 			conv->modif |= 1;
-		else if (ft_strnstr(str, "h", 1))
+			i++;
+		}
+		else if (*str == 'h')
 			conv->modif |= 2;
-		else if (ft_strnstr(str, "l", 1))
+		else if (*str == 'l')
 			conv->modif |= 4;
-		else if (ft_strnstr(str, "j", 1))
+		else if (*str == 'j')
 			conv->modif |= 16;
-		else if (ft_strnstr(str, "t", 1))
+		else if (*str == 't')
 			conv->modif |= 32;
-		else if (ft_strnstr(str, "z", 1))
+		else if (*str == 'z')
 			conv->modif |= 64;
 		else
-			continue ;
+			break ;
 		i++;
 	}
 	return (i);
-}
-
-int		set_modifier(char *str, t_conv *conv)
-{
-	if (ft_strnstr(str, "ll", 2))
-		conv->mod = 'L';
-	else if (ft_strnstr(str, "hh", 2))
-		conv->mod = 'H';
-	else if (ft_strnstr(str, "h", 1))
-		conv->mod = 'h';
-	else if (ft_strnstr(str, "l", 1))
-		conv->mod = 'l';
-	else if (ft_strnstr(str, "j", 1))
-		conv->mod = 'j';
-	else if (ft_strnstr(str, "t", 1))
-		conv->mod = 't';
-	else if (ft_strnstr(str, "z", 1))
-		conv->mod = 'z';
-	else
-		return (0);
-	return (conv->mod == 'L' || conv->mod == 'H' ? 2 : 1);
 }

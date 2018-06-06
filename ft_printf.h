@@ -6,7 +6,7 @@
 /*   By: vtarasiu <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/01 12:16:11 by vtarasiu          #+#    #+#             */
-/*   Updated: 2018/05/25 17:50:20 by vtarasiu         ###   ########.fr       */
+/*   Updated: 2018/06/06 16:14:43 by vtarasiu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,14 +22,14 @@
 # define CONVERSIONS "diouxXDOUaAeEfFgGcCsSpn%"
 # define MODIFIERS "lhjtzq"
 # define FLAGS "0\\L*#- +123456789."
-# define NUMERIC "dDioOuUxX"
+# define NUMERIC "dDioOuUxXp"
 # define NUMERIC_EXT "dDioOuUxXaAeEfFgG"
 # define FLOATING "aAeEfFgG"
 # define ITOA_UPPER "0123456789ABCDEF"
 # define ITOA_LOWER "0123456789abcdef"
 # define ABS(a) (a < 0 ? -(a) : a)
 
-static size_t	g_pb_size = 10;
+static size_t	g_pb_size = 128;
 static int		g_symbols = 0;
 int				g_error;
 
@@ -61,28 +61,28 @@ typedef struct	s_conv
 	char		apostrophe;
 	char		separator;
 	char		long_afeg;
-	char		mod;
-	int			modif;
+	char		modif;
 	long		next_arg;
 	long		precision;
 	long		min_width;
 	char		conv;
 	char		*formatted;
 	char		*res;
-	long		res_length;
 	size_t		format_offset;
 }				t_conv;
 
+void			bufferize(char *s, long long len);
+void			global_init(size_t format_len);
 void			free_conv(t_conv **conv);
 t_conv			*create_empty(void);
 t_conv			*resolve(char *str, va_list arg);
+void			find_eval_print(char *format, va_list list);
 
 /*
 ** Parsing
 */
 int				find_flags(char *str, t_conv *conv);
 int				guess_convertion(char *str, t_conv *conv);
-int				set_modifier(char *str, t_conv *conv);
 int				set_modifier_bits(char *str, t_conv *conv);
 
 /*
@@ -102,8 +102,9 @@ char			*to_unicode_string(wchar_t *string);
 */
 char			*apply_generic_precision(t_conv *conv, char **str, size_t len);
 char			*apply_generic_width(t_conv *conv, char **str,
-									 size_t len, char c);
+										size_t len, char c);
 char			*apply_alt_form_oxx(t_conv *conv, char **str);
+char			*apply_sign_or_space(t_conv *conv, char **str, int sign);
 
 /*
 ** Evals
@@ -113,7 +114,10 @@ void			eval_uoxx(t_conv *conv, va_list arg);
 void			eval_p(t_conv *conv, va_list arg);
 void			eval_cs(t_conv *conv, va_list arg);
 void			eval_percent(t_conv *conv, va_list arg);
+void			eval_invalid(t_conv *conv);
 char			*itoxx(t_conv *conv, unsigned long long nbr);
 char			*itoo(t_conv *conv, unsigned long long nbr);
+char			*itou(t_conv *conv, unsigned long long nbr);
+char			*itod(t_conv *conv, long long int nbr);
 
 #endif

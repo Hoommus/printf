@@ -6,7 +6,7 @@
 /*   By: vtarasiu <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/01 12:15:28 by vtarasiu          #+#    #+#             */
-/*   Updated: 2018/05/18 17:27:29 by vtarasiu         ###   ########.fr       */
+/*   Updated: 2018/06/06 16:37:45 by vtarasiu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,35 +25,24 @@ void	eval(t_conv *conv, va_list arg)
 		eval_p(conv, arg);
 	else if (conv->conv == '%')
 		eval_percent(conv, arg);
+	else if (conv->conv == 0 || ft_strchr(CONVERSIONS, conv->conv) == NULL)
+		eval_invalid(conv);
 }
-
-/*
-** TODO: Add empty conversion handling
-*/
 
 t_conv	*resolve(char *str, va_list arg)
 {
-	t_conv *conv;
-	char *copy;
+	t_conv	*conv;
+	char	*copy;
 
-	copy = str;
+	copy = str++;
 	conv = create_empty();
-	str++;
 	if (ft_strlen(str) == 0)
 		return (conv);
 	str += find_flags(str, conv);
-	set_modifier_bits(str, conv);
-	str += set_modifier(str, conv);
+	str += set_modifier_bits(str, conv);
 	str += guess_convertion(str, conv);
-	if (conv->conv == 'D' || conv->conv == 'O' || conv->conv == 'U'
-		|| conv->conv == 'C' || conv->conv == 'S')
-	{
-		conv->mod = 'l';
-		conv->modif = conv->modif | 8;
-		conv->conv = (char)ft_tolower(conv->conv);
-	}
 	if (conv->conv == 0)
-		g_error = -1;
+		conv->res = to_unicode(*str++);
 	conv->format_offset = str < copy ? copy - str : str - copy;
 	eval(conv, arg);
 	return (conv);
@@ -91,33 +80,13 @@ void	bufferize(char *s, long long len)
 int		ft_printf(const char *restrict format, ...)
 {
 	va_list		list;
-	t_conv		*conv;
-	char		*copy;
-	char		*percent;
 
 	g_symbols = 0;
 	g_error = 0;
 	while (ft_strlen((char *)format) > g_pb_size * 1.2)
 		g_pb_size <<= 1;
 	va_start(list, format);
-	copy = (char *)format;
-	while (*copy)
-	{
-		percent = ft_strchr(copy, '%');
-		if (percent > copy)
-		{
-			bufferize(copy, percent - copy);
-			copy += percent - copy;
-		}
-		else if (percent == NULL)
-		{
-			bufferize(copy, ft_strlen(copy));
-			break ;
-		}
-		bufferize((conv = resolve(percent, list))->res, -1);
-		copy += conv->format_offset != 0 ? conv->format_offset : 1;
-		free_conv(&conv);
-	}
+	find_eval_print((char *)format, list);
 	bufferize(NULL, -1);
 	va_end(list);
 	return (g_error == 0 ? g_symbols : -1);

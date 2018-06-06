@@ -29,7 +29,7 @@ LIB_FILES = ft_bzero.c ft_memcpy.c ft_memccpy.c ft_strcpy.c ft_strcat.c \
             ft_wchar_strlen.c ft_nbrlen.c ft_utf_strlen.c
 
 PRINTF_SRC = stringf.c integerf.c nbr_util.c ft_printf.c generic_stuff.c \
-            util.c unicode.c parsing.c
+            util.c unicode.c parsing.c evals.c
 
 LIB_SRC = $(addprefix $(LIB_DIR)/, $(LIB_FILES))
 OBJ = $(LIB_FILES:.c=.o) $(PRINTF_SRC:.c=.o)
