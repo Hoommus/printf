@@ -6,7 +6,7 @@
 #    By: vtarasiu <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/03/24 10:11:17 by vtarasiu          #+#    #+#              #
-#    Updated: 2018/04/01 18:07:51 by vtarasiu         ###   ########.fr        #
+#    Updated: 2018/06/07 14:32:01 by vtarasiu         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -44,7 +44,10 @@ all: $(NAME)
 exec: all
 	gcc -o $(EXEC) main.c libftprintf.a
 
-clean:
+cleanlib:
+	make -C ./libft clean
+
+clean: cleanlib
 	/bin/rm -f $(OBJ)
 
 fclean: clean

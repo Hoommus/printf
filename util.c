@@ -28,6 +28,7 @@ t_conv	*create_empty(void)
 	new->pad_dir = '+';
 	new->modif = 0;
 	new->conv = 0;
+	new->sign = 0;
 	new->res = NULL;
 	return (new);
 }

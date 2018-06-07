@@ -6,7 +6,7 @@
 /*   By: vtarasiu <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/01 12:16:11 by vtarasiu          #+#    #+#             */
-/*   Updated: 2018/06/06 16:14:43 by vtarasiu         ###   ########.fr       */
+/*   Updated: 2018/06/07 16:44:35 by vtarasiu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,7 +104,9 @@ char			*apply_generic_precision(t_conv *conv, char **str, size_t len);
 char			*apply_generic_width(t_conv *conv, char **str,
 										size_t len, char c);
 char			*apply_alt_form_oxx(t_conv *conv, char **str);
-char			*apply_sign_or_space(t_conv *conv, char **str, int sign);
+char			*apply_sign(t_conv *conv, char **str, int sign);
+char			*apply_space(t_conv *conv, char **str);
+void			override_flags(t_conv *conv, long long int nbr);
 
 /*
 ** Evals

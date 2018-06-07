@@ -91,6 +91,7 @@ void			ft_putstr_fd(char const *s, int fd);
 void			ft_putendl_fd(char const *s, int fd);
 void			ft_putnbr_fd(int n, int fd);
 
+size_t			ft_nbrlen_base(long long int nbr, int base);
 int				ft_nbrlen(long long nbr);
 
 t_list			*ft_lstnew(void const *content, size_t content_size);

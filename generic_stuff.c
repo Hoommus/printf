@@ -6,7 +6,7 @@
 /*   By: vtarasiu <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/21 18:40:38 by vtarasiu          #+#    #+#             */
-/*   Updated: 2018/06/06 20:35:04 by vtarasiu         ###   ########.fr       */
+/*   Updated: 2018/06/07 16:55:39 by vtarasiu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,29 +91,45 @@ char	*apply_alt_form_oxx(t_conv *conv, char **str)
 	return (*str);
 }
 
-char	*apply_sign_or_space(t_conv *conv, char **str, int sign)
+char	*apply_sign(t_conv *conv, char **str, int sign)
 {
 	char	*swap;
 
 	swap = *str;
-	if (conv->sign != 0 && *str[0] != (sign < 0 ? '-' : '+'))
+	if (conv->sign != 0 && swap[0] != (sign < 0 ? '-' : '+'))
 	{
-		if (swap[0] == '0')
+		if (swap[0] == '0' && ft_strlen(swap) != 1
+			&& (long)ft_strlen(swap) > conv->precision)
 			swap[0] = sign < 0 ? '-' : '+';
 		else
 		{
 			swap = ft_strjoin(sign < 0 ? "-" : "+", swap);
 			ft_strdel(str);
 		}
-		*str = swap;
 	}
-	if (conv->space != 0 && *str[0] != '-' && *str[0] != '+' && *str[0] != ' ')
+	return (swap);
+}
+
+char	*apply_space(t_conv *conv, char **str)
+{
+	char	*swap;
+	char	*space;
+
+	space = ft_strnew(1);
+	space[0] = ' ';
+	swap = *str;
+	if (conv->space != 0 && swap[0] != '-' && swap[0] != '+' && swap[0] != ' ')
 	{
-		swap = ft_strnew(ft_strlen(*str) + 1);
-		swap[0] = ' ';
-		ft_strcat(swap, *str);
-		ft_strdel(str);
-		*str = swap;
+		if (swap[0] == '0' && ft_strlen(swap) != 1
+			&& (long)ft_strlen(swap) > conv->precision)
+			swap[0] = ' ';
+		else
+		{
+			*str = swap;
+			swap = ft_strjoin(space, swap);
+			ft_strdel(str);
+		}
 	}
+	ft_strdel(&space);
 	return (swap);
 }

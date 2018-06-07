@@ -6,7 +6,7 @@
 /*   By: vtarasiu <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/14 17:43:24 by vtarasiu          #+#    #+#             */
-/*   Updated: 2018/06/06 20:26:50 by vtarasiu         ###   ########.fr       */
+/*   Updated: 2018/06/07 16:49:22 by vtarasiu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ char	*trimxx(t_conv *conv, char **str)
 
 	swap = *str;
 	i = ft_strlen(*str);
-	if (i > 8 && conv->modif < 4 && i - 8 > 0)
+	if (i > 8 && conv->modif < 4)
 	{
 		swap = ft_strsub(*str, i - 8, i);
 		ft_strdel(str);
@@ -41,7 +41,7 @@ char	*itoxx(t_conv *conv, unsigned long long nbr)
 		new = ft_strnew(0);
 	else
 		new = utos_base(nbr, 16, conv->conv == 'X' ? 1 : 0);
-	if (conv->modif < 8 && conv->modif != 0)
+	if (conv->modif < 4 && conv->modif != 0)
 		new = trimxx(conv, &new);
 	new = apply_generic_precision(conv, &new, ft_strlen(new));
 	if (conv->alt_form != 0 && conv->min_width > -1 && conv->zero_padding != 0)
@@ -81,7 +81,10 @@ char	*itou(t_conv *conv, unsigned long long nbr)
 {
 	char	*new;
 
-	new = utos_base(nbr, 10, 0);
+	if (conv->precision == 0 && nbr == 0)
+		new = ft_strnew(0);
+	else
+		new = utos_base(nbr, 10, 0);
 	new = apply_generic_precision(conv, &new, ft_strlen(new));
 	if (nbr != 0)
 		new = apply_alt_form_oxx(conv, &new);
@@ -92,34 +95,28 @@ char	*itou(t_conv *conv, unsigned long long nbr)
 	return (new);
 }
 
-void	override_flags(t_conv *conv, long long int nbr)
-{
-	if (conv->pad_dir == '-')
-		conv->zero_padding = 0;
-	if (ft_strchr(NUMERIC, conv->conv) != NULL && conv->precision != -1)
-		conv->zero_padding = 0;
-	if (conv->sign != 0)
-		conv->space = 0;
-	if (nbr < 0)
-		conv->sign = '+';
-}
-
 char	*itod(t_conv *conv, long long int nbr)
 {
 	char	*new;
 
-	new = nbr == LLONG_MIN ? ft_strdup("9223372036854775808") : itos_base(ABS(nbr), 10);
+	if (conv->precision == 0 && nbr == 0 && conv->sign == 0)
+		new = ft_strnew(0);
+	else
+		new = nbr == LLONG_MIN ? ft_strdup("9223372036854775808")
+								: itos_base(ABS(nbr), 10);
 	override_flags(conv, nbr);
 	new = apply_generic_precision(conv, &new, ft_strlen(new));
 	if (conv->zero_padding == 0)
 	{
-		new = apply_sign_or_space(conv, &new, nbr < 0 ? -1 : 1);
+		new = apply_sign(conv, &new, nbr < 0 ? -1 : 1);
+		new = apply_space(conv, &new);
 		new = apply_generic_width(conv, &new, ft_strlen(new), 0);
 	}
 	else
 	{
 		new = apply_generic_width(conv, &new, ft_strlen(new), 0);
-		new = apply_sign_or_space(conv, &new, nbr < 0 ? -1 : 1);
+		new = apply_sign(conv, &new, nbr < 0 ? -1 : 1);
+		new = apply_space(conv, &new);
 	}
 	return (new);
 }

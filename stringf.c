@@ -15,7 +15,7 @@
 void	eval_cs(t_conv *conv, va_list arg)
 {
 	char	*str;
-	char	 *ar;
+	char	*ar;
 
 	if (conv->conv == 's')
 	{

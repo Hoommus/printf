@@ -6,11 +6,23 @@
 /*   By: vtarasiu <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/15 16:36:50 by vtarasiu          #+#    #+#             */
-/*   Updated: 2018/05/15 17:02:01 by vtarasiu         ###   ########.fr       */
+/*   Updated: 2018/06/07 15:34:52 by vtarasiu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
+
+void	override_flags(t_conv *conv, long long int nbr)
+{
+	if (conv->pad_dir == '-')
+		conv->zero_padding = 0;
+	if (ft_strchr(NUMERIC, conv->conv) != NULL && conv->precision != -1)
+		conv->zero_padding = 0;
+	if (conv->sign != 0)
+		conv->space = 0;
+	if (nbr < 0)
+		conv->sign = '+';
+}
 
 size_t	nbr_len(long long int nbr, int base)
 {
@@ -23,7 +35,7 @@ size_t	nbr_len(long long int nbr, int base)
 	if (nbr == LLONG_MIN)
 		u_nbr = (unsigned long long int)-(nbr + 1) + 1;
 	else
-		u_nbr = (unsigned long long int)(nbr < 0 ? -nbr : nbr);
+		u_nbr = (unsigned long long int)(nbr);
 	while (u_nbr)
 	{
 		u_nbr /= base;
