@@ -6,7 +6,7 @@
 /*   By: vtarasiu <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/01 12:16:11 by vtarasiu          #+#    #+#             */
-/*   Updated: 2018/06/07 16:44:35 by vtarasiu         ###   ########.fr       */
+/*   Updated: 2018/06/15 17:53:23 by vtarasiu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,6 @@ typedef struct	s_conv
 }				t_conv;
 
 void			bufferize(char *s, long long len);
-void			global_init(size_t format_len);
 void			free_conv(t_conv **conv);
 t_conv			*create_empty(void);
 t_conv			*resolve(char *str, va_list arg);
@@ -100,10 +99,11 @@ char			*to_unicode_string(wchar_t *string);
 /*
 ** Generic
 */
-char			*apply_generic_precision(t_conv *conv, char **str, size_t len);
 char			*apply_generic_width(t_conv *conv, char **str,
-										size_t len, char c);
-char			*apply_alt_form_oxx(t_conv *conv, char **str);
+									 size_t len, char c);
+char			*apply_generic_precision(t_conv *conv, char **str, size_t len);
+char			*apply_unicode_precision(t_conv *conv, char **str);
+char			*apply_alternate_form_ox(t_conv *conv, char **str);
 char			*apply_sign(t_conv *conv, char **str, int sign);
 char			*apply_space(t_conv *conv, char **str);
 void			override_flags(t_conv *conv, long long int nbr);

@@ -48,12 +48,12 @@ char	*itoxx(t_conv *conv, unsigned long long nbr)
 	{
 		new = apply_generic_width(conv, &new, ft_strlen(new), 0);
 		if ((conv->alt_form != 0 && nbr != 0) || conv->conv == 'p')
-			new = apply_alt_form_oxx(conv, &new);
+			new = apply_alternate_form_ox(conv, &new);
 	}
 	else
 	{
 		if (nbr != 0 || conv->conv == 'p')
-			new = apply_alt_form_oxx(conv, &new);
+			new = apply_alternate_form_ox(conv, &new);
 		new = apply_generic_width(conv, &new, ft_strlen(new), 0);
 	}
 	return (new);
@@ -69,7 +69,7 @@ char	*itoo(t_conv *conv, unsigned long long nbr)
 		new = utos_base(nbr, 8, 0);
 	new = apply_generic_precision(conv, &new, ft_strlen(new));
 	if (nbr != 0)
-		new = apply_alt_form_oxx(conv, &new);
+		new = apply_alternate_form_ox(conv, &new);
 	if (conv->precision != -1)
 		new = apply_generic_width(conv, &new, ft_strlen(new), ' ');
 	else
@@ -87,7 +87,7 @@ char	*itou(t_conv *conv, unsigned long long nbr)
 		new = utos_base(nbr, 10, 0);
 	new = apply_generic_precision(conv, &new, ft_strlen(new));
 	if (nbr != 0)
-		new = apply_alt_form_oxx(conv, &new);
+		new = apply_alternate_form_ox(conv, &new);
 	if (conv->precision != -1)
 		new = apply_generic_width(conv, &new, ft_strlen(new), ' ');
 	else

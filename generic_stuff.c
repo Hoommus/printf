@@ -27,13 +27,6 @@ char	*apply_generic_precision(t_conv *conv, char **str, size_t len)
 		ft_strcat(swap, *str);
 		ft_strdel(str);
 	}
-	else if (((long long)len) > conv->precision && conv->precision != -1
-				&& (conv->conv == 's' || conv->conv == 'S'))
-	{
-		swap = ft_strsub(*str, 0, conv->precision < 0 ? ft_strlen(*str)
-													: (size_t)conv->precision);
-		ft_strdel(str);
-	}
 	return (swap);
 }
 
@@ -64,7 +57,7 @@ char	*apply_generic_width(t_conv *conv, char **str, size_t len, char c)
 ** TODO: Привести все эти функции к одному виду (возвращать везде свап)
 */
 
-char	*apply_alt_form_oxx(t_conv *conv, char **str)
+char	*apply_alternate_form_ox(t_conv *conv, char **str)
 {
 	char	*swap;
 

@@ -6,11 +6,35 @@
 /*   By: vtarasiu <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/21 18:35:00 by vtarasiu          #+#    #+#             */
-/*   Updated: 2018/06/06 16:57:45 by vtarasiu         ###   ########.fr       */
+/*   Updated: 2018/06/15 18:47:45 by vtarasiu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
+
+char	*apply_unicode_precision(t_conv *conv, char **str)
+{
+	char	*swap;
+	size_t	i;
+
+	if (conv->precision < 0)
+		return (*str);
+	swap = *str;
+	i = conv->precision;
+	while (swap[i] != '\0' && i >= 0 && swap[i] & 0x80
+			&& !((swap[i] & 0xC0) == 192
+				|| (swap[i] & 0xE0) == 224
+				|| (swap[i] & 0xF0) == 240))
+	{
+		i--;
+	}
+	if (conv->precision >= 0)
+	{
+		swap = ft_strsub(swap, 0, i);
+		ft_strdel(str);
+	}
+	return (swap);
+}
 
 void	eval_cs(t_conv *conv, va_list arg)
 {
@@ -36,7 +60,7 @@ void	eval_cs(t_conv *conv, va_list arg)
 	}
 	if (str == NULL)
 		str = ft_strdup("(null)");
-	str = apply_generic_precision(conv, &str, ft_strlen(str));
+	str = apply_unicode_precision(conv, &str);
 	str = apply_generic_width(conv, &str, ft_strlen(str), 0);
 	conv->res = str;
 }
