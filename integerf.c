@@ -32,6 +32,10 @@ char	*trimxx(t_conv *conv, char **str)
 	return (swap);
 }
 
+/*
+** TODO: Fix those awful crutches here
+*/
+
 char	*itoxx(t_conv *conv, unsigned long long nbr)
 {
 	char	*new;

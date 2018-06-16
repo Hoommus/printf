@@ -43,7 +43,8 @@ int		find_flags(char *str, t_conv *conv)
 	while (ft_strchr(FLAGS, str[i]))
 	{
 		guess_flag(str[i], conv);
-		if (ft_isdigit(str[i]) && str[i] != '0' && str[i - 1] != '.')
+		if (ft_isdigit(str[i]) && str[i] != '0' && str[i - 1] != '.'
+			&& conv->min_width == -1)
 		{
 			conv->min_width = ft_atoi(str + i);
 			i += ft_nbrlen(conv->min_width) - 1;

@@ -18,7 +18,7 @@ void	override_flags(t_conv *conv, long long int nbr)
 		conv->zero_padding = 0;
 	if (ft_strchr(NUMERIC, conv->conv) != NULL && conv->precision != -1)
 		conv->zero_padding = 0;
-	if (conv->sign != 0)
+	if (ft_strchr(SIGNED, conv->conv) != NULL && conv->sign != 0)
 		conv->space = 0;
 	if (nbr < 0)
 		conv->sign = '+';

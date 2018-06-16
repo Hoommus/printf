@@ -21,6 +21,7 @@
 
 # define CONVERSIONS "diouxXDOUaAeEfFgGcCsSpn%"
 # define MODIFIERS "lhjtzq"
+# define SIGNED "diaAeEfFgG"
 # define FLAGS "0\\L*#- +123456789."
 # define NUMERIC "dDioOuUxXp"
 # define NUMERIC_EXT "dDioOuUxXaAeEfFgG"
@@ -115,7 +116,7 @@ void			eval_di(t_conv *conv, va_list arg);
 void			eval_uoxx(t_conv *conv, va_list arg);
 void			eval_p(t_conv *conv, va_list arg);
 void			eval_cs(t_conv *conv, va_list arg);
-void			eval_percent(t_conv *conv, va_list arg);
+void			eval_percent(t_conv *conv);
 void			eval_invalid(t_conv *conv);
 char			*itoxx(t_conv *conv, unsigned long long nbr);
 char			*itoo(t_conv *conv, unsigned long long nbr);

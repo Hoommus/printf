@@ -21,13 +21,15 @@ char	*apply_unicode_precision(t_conv *conv, char **str)
 		return (*str);
 	swap = *str;
 	i = conv->precision;
-	while (swap[i] != '\0' && i >= 0 && swap[i] & 0x80
+	while (swap[i] != '\0' && swap[i] & 0x80
 			&& !((swap[i] & 0xC0) == 192
 				|| (swap[i] & 0xE0) == 224
 				|| (swap[i] & 0xF0) == 240))
 	{
 		i--;
 	}
+	if (conv->precision == 0 && conv->conv == 'c')
+		i = 1;
 	if (conv->precision >= 0)
 	{
 		swap = ft_strsub(swap, 0, i);
@@ -65,16 +67,13 @@ void	eval_cs(t_conv *conv, va_list arg)
 	conv->res = str;
 }
 
-void	eval_percent(t_conv *conv, va_list arg)
+void	eval_percent(t_conv *conv)
 {
 	char		*str;
-	va_list		dummy;
 
-	va_copy(dummy, arg);
 	str = ft_strdup("%");
 	conv->alt_form = 0;
 	str = apply_generic_precision(conv, &str, ft_strlen(str));
 	str = apply_generic_width(conv, &str, ft_strlen(str), 0);
 	conv->res = str;
-	va_end(dummy);
 }

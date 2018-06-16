@@ -66,6 +66,7 @@ void	eval_uoxx(t_conv *conv, va_list arg)
 		d = (unsigned char)va_arg(arg, unsigned int);
 	else
 		d = (unsigned int)va_arg(arg, uintmax_t);
+	override_flags(conv, d);
 	if (conv->conv == 'o')
 		conv->res = itoo(conv, d);
 	else if (conv->conv == 'x' || conv->conv == 'X')

@@ -24,7 +24,7 @@ void	eval(t_conv *conv, va_list arg)
 	else if (conv->conv == 'p')
 		eval_p(conv, arg);
 	else if (conv->conv == '%')
-		eval_percent(conv, arg);
+		eval_percent(conv);
 	else if (conv->conv == 0 || ft_strchr(CONVERSIONS, conv->conv) == NULL)
 		eval_invalid(conv);
 }
