@@ -6,7 +6,7 @@
 /*   By: vtarasiu <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/01 12:16:11 by vtarasiu          #+#    #+#             */
-/*   Updated: 2018/06/15 17:53:23 by vtarasiu         ###   ########.fr       */
+/*   Updated: 2018/06/18 18:06:41 by vtarasiu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,11 +19,16 @@
 # include <limits.h>
 # include "libft/libft.h"
 
-# define CONVERSIONS "diouxXDOUaAeEfFgGcCsSpn%"
+/*
+** Includes for bonuses
+*/
+# include <stdio.h>
+
+# define CONVERSIONS "bdiouxXDOUaAeEfFgGcCsSpn%"
 # define MODIFIERS "lhjtzq"
 # define SIGNED "diaAeEfFgG"
 # define FLAGS "0\\L*#- +123456789."
-# define NUMERIC "dDioOuUxXp"
+# define NUMERIC "bBdDioOuUxXp"
 # define NUMERIC_EXT "dDioOuUxXaAeEfFgG"
 # define FLOATING "aAeEfFgG"
 # define ITOA_UPPER "0123456789ABCDEF"
@@ -32,9 +37,9 @@
 
 static size_t	g_pb_size = 128;
 static int		g_symbols = 0;
+long long		g_written;
+int				g_output;
 int				g_error;
-
-int				ft_printf(const char *restrict format, ...);
 
 /*
 ** Following chars respectively:
@@ -46,7 +51,6 @@ int				ft_printf(const char *restrict format, ...);
 ** '+' - always put sign before conversion
 ** ''' - grouped and separated by thousands
 ** long_afeg = 'L' mod for aAeEfFgG
-** mod  = generic mod
 */
 
 /*
@@ -67,7 +71,6 @@ typedef struct	s_conv
 	long		precision;
 	long		min_width;
 	char		conv;
-	char		*formatted;
 	char		*res;
 	size_t		format_offset;
 }				t_conv;
@@ -77,6 +80,16 @@ void			free_conv(t_conv **conv);
 t_conv			*create_empty(void);
 t_conv			*resolve(char *str, va_list arg);
 void			find_eval_print(char *format, va_list list);
+
+int				ft_printf(const char *restrict format, ...);
+
+/*
+** Printf variations
+*/
+int				ft_printf_fd(int fd, const char *restrict format, va_list list);
+int				ft_dprintf(int fd, const char *restrict format, ...);
+int				ft_fprintf(FILE * restrict stream,
+							const char * restrict format, ...);
 
 /*
 ** Parsing
@@ -105,6 +118,7 @@ char			*apply_generic_width(t_conv *conv, char **str,
 char			*apply_generic_precision(t_conv *conv, char **str, size_t len);
 char			*apply_unicode_precision(t_conv *conv, char **str);
 char			*apply_alternate_form_ox(t_conv *conv, char **str);
+char			*apply_alternate_form_b(t_conv *conv, char **str, char delim);
 char			*apply_sign(t_conv *conv, char **str, int sign);
 char			*apply_space(t_conv *conv, char **str);
 void			override_flags(t_conv *conv, long long int nbr);
@@ -114,11 +128,14 @@ void			override_flags(t_conv *conv, long long int nbr);
 */
 void			eval_di(t_conv *conv, va_list arg);
 void			eval_uoxx(t_conv *conv, va_list arg);
+void			eval_b(t_conv *conv, va_list arg);
 void			eval_p(t_conv *conv, va_list arg);
+void			eval_n(t_conv *conv, va_list arg);
 void			eval_cs(t_conv *conv, va_list arg);
 void			eval_percent(t_conv *conv);
 void			eval_invalid(t_conv *conv);
 char			*itoxx(t_conv *conv, unsigned long long nbr);
+char			*itob(t_conv *conv, unsigned long long nbr);
 char			*itoo(t_conv *conv, unsigned long long nbr);
 char			*itou(t_conv *conv, unsigned long long nbr);
 char			*itod(t_conv *conv, long long int nbr);

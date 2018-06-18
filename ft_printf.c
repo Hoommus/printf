@@ -6,7 +6,7 @@
 /*   By: vtarasiu <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/01 12:15:28 by vtarasiu          #+#    #+#             */
-/*   Updated: 2018/06/06 16:37:45 by vtarasiu         ###   ########.fr       */
+/*   Updated: 2018/06/18 17:58:27 by vtarasiu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,10 @@ void	eval(t_conv *conv, va_list arg)
 		eval_percent(conv);
 	else if (conv->conv == 0 || ft_strchr(CONVERSIONS, conv->conv) == NULL)
 		eval_invalid(conv);
+	else if (conv->conv == 'b')
+		eval_b(conv, arg);
+	else if (conv->conv == 'n')
+		eval_n(conv, arg);
 }
 
 t_conv	*resolve(char *str, va_list arg)
@@ -63,13 +67,13 @@ void	bufferize(char *s, long long len)
 	}
 	if (s == NULL && len == -1)
 	{
-		write(1, buffer, i);
+		g_written += write(g_output, buffer, i);
 		ft_strdel((char **)&buffer);
 		i = 0;
 	}
 	else if (i == g_pb_size)
 	{
-		write(1, buffer, i);
+		g_written += write(g_output, buffer, i);
 		ft_bzero(buffer, g_pb_size);
 		i = 0;
 	}
@@ -81,13 +85,8 @@ int		ft_printf(const char *restrict format, ...)
 {
 	va_list		list;
 
-	g_symbols = 0;
-	g_error = 0;
-	while (ft_strlen((char *)format) > g_pb_size * 1.2)
-		g_pb_size <<= 1;
 	va_start(list, format);
-	find_eval_print((char *)format, list);
-	bufferize(NULL, -1);
+	ft_printf_fd(1, format, list);
 	va_end(list);
 	return (g_error == 0 ? g_symbols : -1);
 }

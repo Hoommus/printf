@@ -6,14 +6,14 @@
 #    By: vtarasiu <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/03/24 10:11:17 by vtarasiu          #+#    #+#              #
-#    Updated: 2018/06/07 14:32:01 by vtarasiu         ###   ########.fr        #
+#    Updated: 2018/06/16 18:45:30 by vtarasiu         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-NAME=libftprintf.a
-EXEC=printf_test
-LIB_DIR=./libft
-LIB_NAME=libft.a
+NAME = libftprintf.a
+EXEC = printf_test
+LIB_DIR = ./libft
+LIB_NAME = libft.a
 LIB_FILES = ft_bzero.c ft_memcpy.c ft_memccpy.c ft_strcpy.c ft_strcat.c \
             ft_strchr.c ft_strrchr.c ft_strcmp.c ft_isprint.c ft_strncpy.c \
             ft_strncat.c ft_isascii.c ft_strncmp.c ft_memchr.c ft_strnstr.c \
@@ -28,8 +28,9 @@ LIB_FILES = ft_bzero.c ft_memcpy.c ft_memccpy.c ft_strcpy.c ft_strcat.c \
             ft_lstdelone.c ft_lstadd.c ft_lstiter.c ft_lstmap.c ft_lstdel.c \
             ft_wchar_strlen.c ft_nbrlen.c ft_utf_strlen.c
 
-PRINTF_SRC = stringf.c integerf.c nbr_util.c ft_printf.c generic_stuff.c \
-            util.c unicode.c parsing.c evals.c
+PRINTF_SRC = stringf.c integerf.c nbr_util.c ft_printf.c generic_functions.c \
+            generic_functions2.c util.c unicode.c parsing.c evals.c evals2.c \
+            variations.c
 
 LIB_SRC = $(addprefix $(LIB_DIR)/, $(LIB_FILES))
 OBJ = $(LIB_FILES:.c=.o) $(PRINTF_SRC:.c=.o)
