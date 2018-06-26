@@ -6,7 +6,7 @@
 /*   By: vtarasiu <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/01 12:16:11 by vtarasiu          #+#    #+#             */
-/*   Updated: 2018/06/18 18:06:41 by vtarasiu         ###   ########.fr       */
+/*   Updated: 2018/06/19 15:51:42 by vtarasiu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,8 +35,9 @@
 # define ITOA_LOWER "0123456789abcdef"
 # define ABS(a) (a < 0 ? -(a) : a)
 
-static size_t	g_pb_size = 128;
+# define BUFFER_SIZE 8192
 static int		g_symbols = 0;
+static char		g_buffer[BUFFER_SIZE];
 long long		g_written;
 int				g_output;
 int				g_error;
@@ -78,15 +79,16 @@ typedef struct	s_conv
 void			bufferize(char *s, long long len);
 void			free_conv(t_conv **conv);
 t_conv			*create_empty(void);
-t_conv			*resolve(char *str, va_list arg);
-void			find_eval_print(char *format, va_list list);
+t_conv			*resolve(char *str, va_list *arg);
+void			resolve_wildcard(t_conv *conv, char *str);
+void			find_eval_print(char *format, va_list *list);
 
 int				ft_printf(const char *restrict format, ...);
 
 /*
 ** Printf variations
 */
-int				ft_printf_fd(int fd, const char *restrict format, va_list list);
+int				ft_printf_fd(int fd, const char *restrict format, va_list *lst);
 int				ft_dprintf(int fd, const char *restrict format, ...);
 int				ft_fprintf(FILE * restrict stream,
 							const char * restrict format, ...);
@@ -126,12 +128,13 @@ void			override_flags(t_conv *conv, long long int nbr);
 /*
 ** Evals
 */
-void			eval_di(t_conv *conv, va_list arg);
-void			eval_uoxx(t_conv *conv, va_list arg);
-void			eval_b(t_conv *conv, va_list arg);
-void			eval_p(t_conv *conv, va_list arg);
-void			eval_n(t_conv *conv, va_list arg);
-void			eval_cs(t_conv *conv, va_list arg);
+void			eval(t_conv *conv, va_list *arg);
+void			eval_di(t_conv *conv, va_list *arg);
+void			eval_uoxx(t_conv *conv, va_list *arg);
+void			eval_b(t_conv *conv, va_list *arg);
+void			eval_p(t_conv *conv, va_list *arg);
+void			eval_n(t_conv *conv, va_list *arg);
+void			eval_cs(t_conv *conv, va_list *arg);
 void			eval_percent(t_conv *conv);
 void			eval_invalid(t_conv *conv);
 char			*itoxx(t_conv *conv, unsigned long long nbr);

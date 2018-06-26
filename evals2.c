@@ -6,7 +6,7 @@
 /*   By: vtarasiu <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/16 18:37:12 by vtarasiu          #+#    #+#             */
-/*   Updated: 2018/06/18 18:18:05 by vtarasiu         ###   ########.fr       */
+/*   Updated: 2018/06/19 14:50:27 by vtarasiu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,47 +29,50 @@ char	*itob(t_conv *conv, unsigned long long nbr)
 	return (new);
 }
 
-void	eval_b(t_conv *conv, va_list arg)
+void	eval_b(t_conv *conv, va_list *arg)
 {
 	unsigned long long int	d;
 
 	if (conv->modif & 64)
-		d = va_arg(arg, size_t);
+		d = va_arg(*arg, size_t);
 	else if (conv->modif & 32)
-		d = (unsigned long long int)va_arg(arg, ptrdiff_t);
+		d = (unsigned long long int)va_arg(*arg, ptrdiff_t);
 	else if (conv->modif & 16)
-		d = va_arg(arg, unsigned long long int);
+		d = va_arg(*arg, unsigned long long int);
 	else if (conv->modif & 8)
-		d = va_arg(arg, unsigned long long int);
+		d = va_arg(*arg, unsigned long long int);
 	else if (conv->modif & 4)
-		d = va_arg(arg, unsigned long);
+		d = va_arg(*arg, unsigned long);
 	else if (conv->modif & 2)
-		d = (unsigned short)va_arg(arg, unsigned int);
+		d = (unsigned short)va_arg(*arg, unsigned int);
 	else if (conv->modif & 1)
-		d = (unsigned char)va_arg(arg, unsigned int);
+		d = (unsigned char)va_arg(*arg, unsigned int);
 	else
-		d = (unsigned int)va_arg(arg, uintmax_t);
+		d = (unsigned int)va_arg(*arg, uintmax_t);
 	override_flags(conv, d);
 	conv->res = itob(conv, d);
 }
 
-void	eval_n(t_conv *conv, va_list arg)
+void	eval_n(t_conv *conv, va_list *arg)
 {
+	void *d;
+
 	if (conv->modif & 64)
-		*(va_arg(arg, long long int *)) = g_written;
+		d = va_arg(*arg, long long int *);
 	else if (conv->modif & 32)
-		*(va_arg(arg, ptrdiff_t *)) = g_written;
+		d = va_arg(*arg, ptrdiff_t *);
 	else if (conv->modif & 16)
-		*(va_arg(arg, intmax_t *)) = g_written;
+		d = va_arg(*arg, intmax_t *);
 	else if (conv->modif & 8)
-		*(va_arg(arg, long long *)) = g_written;
+		d = va_arg(*arg, long long *);
 	else if (conv->modif & 4)
-		*(va_arg(arg, long *)) = g_written;
+		d = va_arg(*arg, long *);
 	else if (conv->modif & 2)
-		*((short *)va_arg(arg, int *)) = g_written;
+		d =(short *)va_arg(*arg, int *);
 	else if (conv->modif & 1)
-		*((signed char *)va_arg(arg, int *)) = g_written;
+		d =(signed char *)va_arg(*arg, int *);
 	else
-		*(va_arg(arg, int *)) = g_written;
+		d = va_arg(*arg, int *);
+	*((int *)d) = g_symbols;
 	conv->res = ft_strnew(0);
 }

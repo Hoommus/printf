@@ -6,7 +6,7 @@
 /*   By: vtarasiu <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/04 12:59:36 by vtarasiu          #+#    #+#             */
-/*   Updated: 2018/06/06 16:21:43 by vtarasiu         ###   ########.fr       */
+/*   Updated: 2018/06/19 16:20:13 by vtarasiu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,23 +14,23 @@
 
 t_conv	*create_empty(void)
 {
-	t_conv	*new;
+	t_conv	*conv;
 
-	new = (t_conv *)malloc(sizeof(t_conv));
-	if (new == NULL)
+	conv = (t_conv *)malloc(sizeof(t_conv));
+	if (conv == NULL)
 		return (NULL);
-	new->format_offset = 0;
-	new->zero_padding = 0;
-	new->min_width = -1;
-	new->precision = -1;
-	new->long_afeg = 0;
-	new->next_arg = 0;
-	new->pad_dir = '+';
-	new->modif = 0;
-	new->conv = 0;
-	new->sign = 0;
-	new->res = NULL;
-	return (new);
+	conv->format_offset = 0;
+	conv->zero_padding = 0;
+	conv->min_width = -1;
+	conv->precision = -1;
+	conv->long_afeg = 0;
+	conv->next_arg = 0;
+	conv->pad_dir = '+';
+	conv->modif = 0;
+	conv->conv = 0;
+	conv->sign = 0;
+	conv->res = NULL;
+	return (conv);
 }
 
 void	free_conv(t_conv **conv)
@@ -43,11 +43,12 @@ void	free_conv(t_conv **conv)
 	*conv = NULL;
 }
 
-void	find_eval_print(char *format, va_list list)
+void	find_eval_print(char *format, va_list *list)
 {
 	char		*percent;
 	t_conv		*conv;
 
+	ft_bzero(g_buffer, sizeof(g_buffer));
 	while (*format)
 	{
 		percent = ft_strchr(format, '%');

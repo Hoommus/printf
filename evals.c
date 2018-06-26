@@ -6,11 +6,32 @@
 /*   By: vtarasiu <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/06 16:03:23 by vtarasiu          #+#    #+#             */
-/*   Updated: 2018/06/06 16:43:06 by vtarasiu         ###   ########.fr       */
+/*   Updated: 2018/06/19 14:45:58 by vtarasiu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
+
+void	eval(t_conv *conv, va_list *arg)
+{
+	if (conv->conv == 'd' || conv->conv == 'i')
+		eval_di(conv, arg);
+	else if (conv->conv == 'o' || conv->conv == 'x' || conv->conv == 'X'
+			 || conv->conv == 'u')
+		eval_uoxx(conv, arg);
+	else if (conv->conv == 'c' || conv->conv == 's')
+		eval_cs(conv, arg);
+	else if (conv->conv == 'p')
+		eval_p(conv, arg);
+	else if (conv->conv == '%')
+		eval_percent(conv);
+	else if (conv->conv == 0 || ft_strchr(CONVERSIONS, conv->conv) == NULL)
+		eval_invalid(conv);
+	else if (conv->conv == 'b')
+		eval_b(conv, arg);
+	else if (conv->conv == 'n')
+		eval_n(conv, arg);
+}
 
 /*
 ** Flags correspondence:
@@ -23,49 +44,49 @@
 ** z  = 64 (long long or something else)
 */
 
-void	eval_di(t_conv *conv, va_list arg)
+void	eval_di(t_conv *conv, va_list *arg)
 {
 	long long int	d;
 
 	if (conv->modif & 64)
-		d = va_arg(arg, long long int);
+		d = va_arg(*arg, long long int);
 	else if (conv->modif & 32)
-		d = va_arg(arg, ptrdiff_t);
+		d = va_arg(*arg, ptrdiff_t);
 	else if (conv->modif & 16)
-		d = va_arg(arg, intmax_t);
+		d = va_arg(*arg, intmax_t);
 	else if (conv->modif & 8)
-		d = va_arg(arg, long long);
+		d = va_arg(*arg, long long);
 	else if (conv->modif & 4)
-		d = va_arg(arg, long);
+		d = va_arg(*arg, long);
 	else if (conv->modif & 2)
-		d = (short)va_arg(arg, int);
+		d = (short)va_arg(*arg, int);
 	else if (conv->modif & 1)
-		d = (signed char)va_arg(arg, int);
+		d = (signed char)va_arg(*arg, int);
 	else
-		d = va_arg(arg, int);
+		d = va_arg(*arg, int);
 	conv->res = itod(conv, d);
 }
 
-void	eval_uoxx(t_conv *conv, va_list arg)
+void	eval_uoxx(t_conv *conv, va_list *arg)
 {
 	unsigned long long int	d;
 
 	if (conv->modif & 64)
-		d = va_arg(arg, size_t);
+		d = va_arg(*arg, size_t);
 	else if (conv->modif & 32)
-		d = (unsigned long long int)va_arg(arg, ptrdiff_t);
+		d = (unsigned long long int)va_arg(*arg, ptrdiff_t);
 	else if (conv->modif & 16)
-		d = va_arg(arg, unsigned long long int);
+		d = va_arg(*arg, unsigned long long int);
 	else if (conv->modif & 8)
-		d = va_arg(arg, unsigned long long int);
+		d = va_arg(*arg, unsigned long long int);
 	else if (conv->modif & 4)
-		d = va_arg(arg, unsigned long);
+		d = va_arg(*arg, unsigned long);
 	else if (conv->modif & 2)
-		d = (unsigned short)va_arg(arg, unsigned int);
+		d = (unsigned short)va_arg(*arg, unsigned int);
 	else if (conv->modif & 1)
-		d = (unsigned char)va_arg(arg, unsigned int);
+		d = (unsigned char)va_arg(*arg, unsigned int);
 	else
-		d = (unsigned int)va_arg(arg, uintmax_t);
+		d = (unsigned int)va_arg(*arg, uintmax_t);
 	override_flags(conv, d);
 	if (conv->conv == 'o')
 		conv->res = itoo(conv, d);
@@ -75,11 +96,11 @@ void	eval_uoxx(t_conv *conv, va_list arg)
 		conv->res = itou(conv, d);
 }
 
-void	eval_p(t_conv *conv, va_list arg)
+void	eval_p(t_conv *conv, va_list *arg)
 {
 	unsigned long long	nbr;
 
-	nbr = (unsigned long long)va_arg(arg, void *);
+	nbr = (unsigned long long)va_arg(*arg, void *);
 	conv->alt_form = '#';
 	conv->conv = 'p';
 	conv->modif = conv->modif | 8;

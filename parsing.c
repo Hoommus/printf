@@ -65,7 +65,7 @@ int		guess_convertion(char *str, t_conv *conv)
 	if (ft_strchr(CONVERSIONS, *str) != 0)
 		conv->conv = *str;
 	if (conv->conv == 'D' || conv->conv == 'O' || conv->conv == 'U'
-		|| conv->conv == 'C' || conv->conv == 'S')
+		|| conv->conv == 'C' || conv->conv == 'S' || conv->conv == 'B')
 	{
 		conv->modif = conv->modif | 12;
 		conv->conv = (char)ft_tolower(conv->conv);

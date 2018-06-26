@@ -6,7 +6,7 @@
 /*   By: vtarasiu <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/21 18:35:00 by vtarasiu          #+#    #+#             */
-/*   Updated: 2018/06/15 18:47:45 by vtarasiu         ###   ########.fr       */
+/*   Updated: 2018/06/19 14:57:56 by vtarasiu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ char	*apply_unicode_precision(t_conv *conv, char **str)
 	return (swap);
 }
 
-void	eval_cs(t_conv *conv, va_list arg)
+void	eval_cs(t_conv *conv, va_list *arg)
 {
 	char	*str;
 	char	*ar;
@@ -46,19 +46,19 @@ void	eval_cs(t_conv *conv, va_list arg)
 	if (conv->conv == 's')
 	{
 		if (conv->modif & 4 || conv->modif & 8)
-			str = to_unicode_string(va_arg(arg, wchar_t *));
+			str = to_unicode_string(va_arg(*arg, wchar_t *));
 		else
 		{
-			ar = va_arg(arg, char *);
+			ar = va_arg(*arg, char *);
 			str = ar == NULL ? ft_strdup("(null)") : ft_strdup(ar);
 		}
 	}
 	else
 	{
 		if (conv->modif & 4 || conv->modif & 8)
-			str = to_unicode((wchar_t)va_arg(arg, long));
+			str = to_unicode((wchar_t)va_arg(*arg, long));
 		else
-			str = to_unicode((char)va_arg(arg, int));
+			str = to_unicode((char)va_arg(*arg, int));
 	}
 	if (str == NULL)
 		str = ft_strdup("(null)");
