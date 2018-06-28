@@ -21,8 +21,7 @@ t_conv	*resolve(char *str, va_list *arg)
 	conv = create_empty();
 	if (ft_strlen(str) == 0)
 		return (conv);
-
-	str += find_flags(str, conv);
+	str += find_flags(str, conv, arg);
 	str += set_modifier_bits(str, conv);
 	str += guess_convertion(str, conv);
 	if (conv->conv == 0)
@@ -34,24 +33,25 @@ t_conv	*resolve(char *str, va_list *arg)
 
 void	bufferize(char *s, long long len)
 {
+	static unsigned char	buffer[BUFFER_SIZE];
 	static unsigned long	i;
 
 	len = len < 0 ? ft_strlen(s) : len;
 	while (i < BUFFER_SIZE && len--)
 	{
-		g_buffer[i++] = (unsigned char)*s == 1 ? 0 : *s;
+		buffer[i++] = (unsigned char)*s == 1 ? 0 : *s;
 		s++;
 		g_symbols++;
 	}
 	if (s == NULL && len == -1)
 	{
-		g_written += write(g_output, g_buffer, i);
+		g_written += write(g_output, buffer, i);
 		i = 0;
 	}
 	else if (i == BUFFER_SIZE)
 	{
-		g_written += write(g_output, g_buffer, i);
-		ft_bzero(g_buffer, BUFFER_SIZE);
+		g_written += write(g_output, buffer, i);
+		ft_bzero(buffer, BUFFER_SIZE);
 		i = 0;
 	}
 	if (len > 0)

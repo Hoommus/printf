@@ -48,7 +48,6 @@ void	find_eval_print(char *format, va_list *list)
 	char		*percent;
 	t_conv		*conv;
 
-	ft_bzero(g_buffer, sizeof(g_buffer));
 	while (*format)
 	{
 		percent = ft_strchr(format, '%');

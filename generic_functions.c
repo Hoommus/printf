@@ -36,7 +36,7 @@ char	*apply_generic_width(t_conv *conv, char **str, size_t len, char c)
 	char	space;
 	long	i;
 
-	if (conv->min_width == -1 || ft_strlen(*str) >= (size_t)conv->min_width)
+	if (conv->min_width == -1 || len >= (size_t)conv->min_width)
 		return (*str);
 	i = 0;
 	space = (char)(c != 0 ? c : ' ');
@@ -44,7 +44,10 @@ char	*apply_generic_width(t_conv *conv, char **str, size_t len, char c)
 		space = '0';
 	swap = ft_strnew((size_t)conv->min_width);
 	while (conv->pad_dir != '-' && i < conv->min_width - (long)len)
-		swap[i++] = space;
+	{
+		swap[i] = space;
+		i++;
+	}
 	ft_strcat(swap, *str);
 	i = len;
 	while (conv->pad_dir == '-' && i < conv->min_width)
@@ -116,9 +119,7 @@ char	*apply_space(t_conv *conv, char **str)
 		else
 		{
 			*str = swap;
-			swap = ft_strnew(ft_strlen(*str) + 1);
-			swap[0] = ' ';
-			ft_strcat(swap, *str);
+			swap = ft_strjoin(" ", *str);
 			ft_strdel(str);
 		}
 	}

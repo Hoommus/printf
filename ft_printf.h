@@ -24,6 +24,10 @@
 */
 # include <stdio.h>
 
+# define bool int
+# define true 1
+# define false 0
+
 # define CONVERSIONS "bdiouxXDOUaAeEfFgGcCsSpn%"
 # define MODIFIERS "lhjtzq"
 # define SIGNED "diaAeEfFgG"
@@ -36,8 +40,8 @@
 # define ABS(a) (a < 0 ? -(a) : a)
 
 # define BUFFER_SIZE 8192
+
 static int		g_symbols = 0;
-static char		g_buffer[BUFFER_SIZE];
 long long		g_written;
 int				g_output;
 int				g_error;
@@ -80,7 +84,9 @@ void			bufferize(char *s, long long len);
 void			free_conv(t_conv **conv);
 t_conv			*create_empty(void);
 t_conv			*resolve(char *str, va_list *arg);
-void			resolve_wildcard(t_conv *conv, char *str);
+int				resolve_wildcard_or_else(t_conv *conv, char *str, va_list *list,
+										int is_precision);
+void			resolve_wildcards(t_conv *conv, char *str, va_list *list);
 void			find_eval_print(char *format, va_list *list);
 
 int				ft_printf(const char *restrict format, ...);
@@ -96,14 +102,15 @@ int				ft_fprintf(FILE * restrict stream,
 /*
 ** Parsing
 */
-int				find_flags(char *str, t_conv *conv);
+int				find_flags(char *str, t_conv *conv, va_list *list);
 int				guess_convertion(char *str, t_conv *conv);
 int				set_modifier_bits(char *str, t_conv *conv);
 
 /*
 ** Number-related
 */
-char			*utos_base(unsigned long long int nbr, int base, int var);
+char			*utos_base(unsigned long long nbr, int base,
+							const char *charset);
 char			*itos_base(long long int nbr, int base);
 
 /*
@@ -137,7 +144,7 @@ void			eval_n(t_conv *conv, va_list *arg);
 void			eval_cs(t_conv *conv, va_list *arg);
 void			eval_percent(t_conv *conv);
 void			eval_invalid(t_conv *conv);
-char			*itoxx(t_conv *conv, unsigned long long nbr);
+char			*itox(t_conv *conv, unsigned long long nbr);
 char			*itob(t_conv *conv, unsigned long long nbr);
 char			*itoo(t_conv *conv, unsigned long long nbr);
 char			*itou(t_conv *conv, unsigned long long nbr);

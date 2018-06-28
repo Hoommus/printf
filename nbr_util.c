@@ -45,12 +45,10 @@ size_t	nbr_len(long long int nbr, int base)
 }
 
 /*
-** var (variant) is used to determine if letters should have upper or lower case
-** 0 == lower
-** 1 == upper
+** charset is used to determine if letters should have upper or lower case
 */
 
-char	*utos_base(unsigned long long int nbr, int base, int var)
+char	*utos_base(unsigned long long int nbr, int base, const char *charset)
 {
 	size_t	len;
 	char	*str;
@@ -69,7 +67,7 @@ char	*utos_base(unsigned long long int nbr, int base, int var)
 	str[len--] = '\0';
 	while (nbr)
 	{
-		str[len--] = var == 1 ? ITOA_UPPER[nbr % base] : ITOA_LOWER[nbr % base];
+		str[len--] = charset[nbr % base];
 		nbr /= base;
 	}
 	return (str);

@@ -36,7 +36,7 @@ char	*trimxx(t_conv *conv, char **str)
 ** TODO: Fix those awful crutches here
 */
 
-char	*itoxx(t_conv *conv, unsigned long long nbr)
+char	*itox(t_conv *conv, unsigned long long nbr)
 {
 	char	*new;
 
@@ -44,7 +44,7 @@ char	*itoxx(t_conv *conv, unsigned long long nbr)
 			(conv->conv == 'p' && conv->precision == 0))
 		new = ft_strnew(0);
 	else
-		new = utos_base(nbr, 16, conv->conv == 'X' ? 1 : 0);
+		new = utos_base(nbr, 16, conv->conv == 'X' ? ITOA_UPPER : ITOA_LOWER);
 	if (conv->modif < 4 && conv->modif != 0)
 		new = trimxx(conv, &new);
 	new = apply_generic_precision(conv, &new, ft_strlen(new));
@@ -70,7 +70,7 @@ char	*itoo(t_conv *conv, unsigned long long nbr)
 	if (nbr == 0 && conv->precision == 0 && conv->alt_form == 0)
 		new = ft_strnew(0);
 	else
-		new = utos_base(nbr, 8, 0);
+		new = utos_base(nbr, 8, ITOA_LOWER);
 	new = apply_generic_precision(conv, &new, ft_strlen(new));
 	if (nbr != 0)
 		new = apply_alternate_form_ox(conv, &new);
@@ -88,7 +88,7 @@ char	*itou(t_conv *conv, unsigned long long nbr)
 	if (conv->precision == 0 && nbr == 0)
 		new = ft_strnew(0);
 	else
-		new = utos_base(nbr, 10, 0);
+		new = utos_base(nbr, 10, ITOA_LOWER);
 	new = apply_generic_precision(conv, &new, ft_strlen(new));
 	if (nbr != 0)
 		new = apply_alternate_form_ox(conv, &new);

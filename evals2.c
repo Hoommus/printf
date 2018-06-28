@@ -19,7 +19,7 @@ char	*itob(t_conv *conv, unsigned long long nbr)
 	if (nbr == 0 && conv->precision == 0 && conv->alt_form == 0)
 		new = ft_strnew(0);
 	else
-		new = utos_base(nbr, 2, 0);
+		new = utos_base(nbr, 2, ITOA_LOWER);
 	new = apply_generic_precision(conv, &new, ft_strlen(new));
 	if (conv->zero_padding != 0 && (conv->pad_dir == '-'
 			|| conv->precision != -1))
@@ -68,11 +68,21 @@ void	eval_n(t_conv *conv, va_list *arg)
 	else if (conv->modif & 4)
 		d = va_arg(*arg, long *);
 	else if (conv->modif & 2)
-		d =(short *)va_arg(*arg, int *);
+		d = (short *)va_arg(*arg, int *);
 	else if (conv->modif & 1)
-		d =(signed char *)va_arg(*arg, int *);
+		d = (signed char *)va_arg(*arg, int *);
 	else
 		d = va_arg(*arg, int *);
 	*((int *)d) = g_symbols;
 	conv->res = ft_strnew(0);
+}
+
+void	eval_f(t_conv *conv, va_list *arg)
+{
+	long double		d;
+
+	if (conv->modif & 8 || conv->long_afeg)
+		d = va_arg(*arg, long double);
+	else
+		d = va_arg(*arg, double);
 }

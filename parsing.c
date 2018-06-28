@@ -35,26 +35,19 @@ int		guess_flag(char c, t_conv *conv)
 	return (1);
 }
 
-int		find_flags(char *str, t_conv *conv)
+int		find_flags(char *str, t_conv *conv, va_list *list)
 {
 	int		i;
 
 	i = 0;
-	while (ft_strchr(FLAGS, str[i]))
+	while (str[i] && ft_strchr(FLAGS, str[i]))
 	{
 		guess_flag(str[i], conv);
-		if (ft_isdigit(str[i]) && str[i] != '0' && str[i - 1] != '.'
-			&& conv->min_width == -1)
-		{
-			conv->min_width = ft_atoi(str + i);
-			i += ft_nbrlen(conv->min_width) - 1;
-		}
-		if (str[i] == '.' && conv->precision == -1)
-		{
-			conv->precision = ft_atoi(str + i + 1);
-			if (ft_isdigit(str[i + 1]))
-				i += ft_nbrlen(conv->precision);
-		}
+		if ((ft_isdigit(str[i]) || str[i] == '*') && str[i] != '0'
+			&& str[i - 1] != '.')
+			i += resolve_wildcard_or_else(conv, str + i, list, false);
+		if (str[i] == '.')
+			i += resolve_wildcard_or_else(conv, str + i, list, true);
 		i++;
 	}
 	return (i);
@@ -62,7 +55,7 @@ int		find_flags(char *str, t_conv *conv)
 
 int		guess_convertion(char *str, t_conv *conv)
 {
-	if (ft_strchr(CONVERSIONS, *str) != 0)
+	if (ft_strchr(CONVERSIONS, *str))
 		conv->conv = *str;
 	if (conv->conv == 'D' || conv->conv == 'O' || conv->conv == 'U'
 		|| conv->conv == 'C' || conv->conv == 'S' || conv->conv == 'B')
@@ -80,16 +73,10 @@ int		set_modifier_bits(char *str, t_conv *conv)
 	i = 0;
 	while (ft_strchr(MODIFIERS, str[i]) != NULL)
 	{
-		if (ft_strnstr(str, "ll", 2))
-		{
+		if (ft_strnstr(str + i, "ll", 2) && ++i)
 			conv->modif |= 8;
-			i++;
-		}
-		else if (ft_strnstr(str, "hh", 2))
-		{
+		else if (ft_strnstr(str + i, "hh", 2) && ++i)
 			conv->modif |= 1;
-			i++;
-		}
 		else if (*str == 'h')
 			conv->modif |= 2;
 		else if (*str == 'l')
@@ -105,4 +92,34 @@ int		set_modifier_bits(char *str, t_conv *conv)
 		i++;
 	}
 	return (i);
+}
+
+int		resolve_wildcard_or_else(t_conv *conv, char *str, va_list *list,
+								int is_precision)
+{
+	int		d;
+
+	if (*str == '*' || (is_precision && *(str + 1) == '*'))
+	{
+		d = va_arg(*list, int);
+		if (is_precision)
+			conv->precision = d < -1 ? -1 : d;
+		else
+		{
+			conv->min_width = d < 0 ? ABS(d) : d;
+			conv->pad_dir = d < 0 ? '-' : conv->pad_dir;
+		}
+		return (0);
+	}
+	else if (is_precision)
+	{
+		conv->precision = ft_atoi(str + 1);
+		return (ft_nbrlen(conv->precision) == 1 ? 0
+												: ft_nbrlen(conv->precision));
+	}
+	else
+	{
+		conv->min_width = ft_atoi(str);
+		return (ft_nbrlen(conv->min_width) - 1);
+	}
 }

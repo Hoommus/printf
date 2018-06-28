@@ -17,7 +17,7 @@ void	eval(t_conv *conv, va_list *arg)
 	if (conv->conv == 'd' || conv->conv == 'i')
 		eval_di(conv, arg);
 	else if (conv->conv == 'o' || conv->conv == 'x' || conv->conv == 'X'
-			 || conv->conv == 'u')
+			|| conv->conv == 'u')
 		eval_uoxx(conv, arg);
 	else if (conv->conv == 'c' || conv->conv == 's')
 		eval_cs(conv, arg);
@@ -91,7 +91,7 @@ void	eval_uoxx(t_conv *conv, va_list *arg)
 	if (conv->conv == 'o')
 		conv->res = itoo(conv, d);
 	else if (conv->conv == 'x' || conv->conv == 'X')
-		conv->res = itoxx(conv, d);
+		conv->res = itox(conv, d);
 	else if (conv->conv == 'u')
 		conv->res = itou(conv, d);
 }
@@ -104,7 +104,7 @@ void	eval_p(t_conv *conv, va_list *arg)
 	conv->alt_form = '#';
 	conv->conv = 'p';
 	conv->modif = conv->modif | 8;
-	conv->res = itoxx(conv, nbr);
+	conv->res = itox(conv, nbr);
 }
 
 void	eval_invalid(t_conv *conv)

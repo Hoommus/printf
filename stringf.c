@@ -12,32 +12,6 @@
 
 #include "ft_printf.h"
 
-char	*apply_unicode_precision(t_conv *conv, char **str)
-{
-	char	*swap;
-	size_t	i;
-
-	if (conv->precision < 0)
-		return (*str);
-	swap = *str;
-	i = conv->precision;
-	while (swap[i] != '\0' && swap[i] & 0x80
-			&& !((swap[i] & 0xC0) == 192
-				|| (swap[i] & 0xE0) == 224
-				|| (swap[i] & 0xF0) == 240))
-	{
-		i--;
-	}
-	if (conv->precision == 0 && conv->conv == 'c')
-		i = 1;
-	if (conv->precision >= 0)
-	{
-		swap = ft_strsub(swap, 0, i);
-		ft_strdel(str);
-	}
-	return (swap);
-}
-
 void	eval_cs(t_conv *conv, va_list *arg)
 {
 	char	*str;
