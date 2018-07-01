@@ -6,11 +6,11 @@
 /*   By: vtarasiu <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/15 16:36:50 by vtarasiu          #+#    #+#             */
-/*   Updated: 2018/06/07 15:34:52 by vtarasiu         ###   ########.fr       */
+/*   Updated: 2018/07/01 15:06:19 by vtarasiu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ft_printf.h"
+#include "../include/ft_printf_internal.h"
 
 void	override_flags(t_conv *conv, long long int nbr)
 {

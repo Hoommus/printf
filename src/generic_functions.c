@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   generic_stuff.c                                    :+:      :+:    :+:   */
+/*   generic_functions.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: vtarasiu <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/21 18:40:38 by vtarasiu          #+#    #+#             */
-/*   Updated: 2018/06/07 16:55:39 by vtarasiu         ###   ########.fr       */
+/*   Updated: 2018/07/01 15:06:20 by vtarasiu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ft_printf.h"
+#include "../include/ft_printf_internal.h"
 
 char	*apply_generic_precision(t_conv *conv, char **str, size_t len)
 {

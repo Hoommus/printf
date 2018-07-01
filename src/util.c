@@ -6,11 +6,11 @@
 /*   By: vtarasiu <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/04 12:59:36 by vtarasiu          #+#    #+#             */
-/*   Updated: 2018/06/19 16:20:13 by vtarasiu         ###   ########.fr       */
+/*   Updated: 2018/07/01 17:10:29 by vtarasiu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ft_printf.h"
+#include "../include/ft_printf_internal.h"
 
 t_conv	*create_empty(void)
 {
@@ -24,7 +24,6 @@ t_conv	*create_empty(void)
 	conv->min_width = -1;
 	conv->precision = -1;
 	conv->long_afeg = 0;
-	conv->next_arg = 0;
 	conv->pad_dir = '+';
 	conv->modif = 0;
 	conv->conv = 0;

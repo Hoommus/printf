@@ -1,32 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_printf.h                                        :+:      :+:    :+:   */
+/*   ft_printf_internal.h                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: vtarasiu <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/05/01 12:16:11 by vtarasiu          #+#    #+#             */
-/*   Updated: 2018/06/19 15:51:42 by vtarasiu         ###   ########.fr       */
+/*   Created: 2018/07/01 15:02:40 by vtarasiu          #+#    #+#             */
+/*   Updated: 2018/07/01 15:29:35 by vtarasiu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef FT_PRINTF_H
-# define FT_PRINTF_H
+#ifndef FT_PRINTF_FT_PRINTF_INTERNAL_H
+# define FT_PRINTF_FT_PRINTF_INTERNAL_H
 
-# include <stddef.h>
-# include <stdarg.h>
-# include <stdlib.h>
-# include <limits.h>
-# include "libft/libft.h"
+# include "../libft/libft.h"
+# include "ft_printf.h"
 
-/*
-** Includes for bonuses
-*/
-# include <stdio.h>
-
-# define bool int
-# define true 1
-# define false 0
+# define TRUE 1
+# define FALSE 0
 
 # define CONVERSIONS "bdiouxXDOUaAeEfFgGcCsSpn%"
 # define MODIFIERS "lhjtzq"
@@ -39,7 +30,7 @@
 # define ITOA_LOWER "0123456789abcdef"
 # define ABS(a) (a < 0 ? -(a) : a)
 
-# define BUFFER_SIZE 8192
+# define BUFFER_SIZE 2048
 
 static int		g_symbols = 0;
 long long		g_written;
@@ -69,10 +60,8 @@ typedef struct	s_conv
 	char		space;
 	char		sign;
 	char		apostrophe;
-	char		separator;
 	char		long_afeg;
 	char		modif;
-	long		next_arg;
 	long		precision;
 	long		min_width;
 	char		conv;
@@ -85,19 +74,8 @@ void			free_conv(t_conv **conv);
 t_conv			*create_empty(void);
 t_conv			*resolve(char *str, va_list *arg);
 int				resolve_wildcard_or_else(t_conv *conv, char *str, va_list *list,
-										int is_precision);
-void			resolve_wildcards(t_conv *conv, char *str, va_list *list);
+											int is_precision);
 void			find_eval_print(char *format, va_list *list);
-
-int				ft_printf(const char *restrict format, ...);
-
-/*
-** Printf variations
-*/
-int				ft_printf_fd(int fd, const char *restrict format, va_list *lst);
-int				ft_dprintf(int fd, const char *restrict format, ...);
-int				ft_fprintf(FILE * restrict stream,
-							const char * restrict format, ...);
 
 /*
 ** Parsing
@@ -123,7 +101,7 @@ char			*to_unicode_string(wchar_t *string);
 ** Generic
 */
 char			*apply_generic_width(t_conv *conv, char **str,
-									 size_t len, char c);
+									size_t len, char c);
 char			*apply_generic_precision(t_conv *conv, char **str, size_t len);
 char			*apply_unicode_precision(t_conv *conv, char **str);
 char			*apply_alternate_form_ox(t_conv *conv, char **str);

@@ -6,11 +6,11 @@
 /*   By: vtarasiu <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/21 18:35:00 by vtarasiu          #+#    #+#             */
-/*   Updated: 2018/06/19 14:57:56 by vtarasiu         ###   ########.fr       */
+/*   Updated: 2018/07/01 15:06:19 by vtarasiu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ft_printf.h"
+#include "../include/ft_printf_internal.h"
 
 void	eval_cs(t_conv *conv, va_list *arg)
 {

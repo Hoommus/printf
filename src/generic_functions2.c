@@ -6,11 +6,11 @@
 /*   By: vtarasiu <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/16 19:13:14 by vtarasiu          #+#    #+#             */
-/*   Updated: 2018/06/18 18:19:38 by vtarasiu         ###   ########.fr       */
+/*   Updated: 2018/07/01 15:06:19 by vtarasiu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ft_printf.h"
+#include "../include/ft_printf_internal.h"
 
 /*
 ** Function splits string into 4-bit pieces and separates them using separator

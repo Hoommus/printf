@@ -6,18 +6,18 @@
 /*   By: vtarasiu <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/15 16:41:29 by vtarasiu          #+#    #+#             */
-/*   Updated: 2018/06/06 18:47:20 by vtarasiu         ###   ########.fr       */
+/*   Updated: 2018/07/01 15:06:19 by vtarasiu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ft_printf.h"
+#include "../include/ft_printf_internal.h"
 
-int		guess_flag(char c, t_conv *conv)
+void	guess_flag(char c, t_conv *conv)
 {
 	if (c == '0')
 		conv->zero_padding = 'z';
 	else if (ft_isdigit(c))
-		return (0);
+		return ;
 	else if (c == '#')
 		conv->alt_form = '#';
 	else if (c == '-')
@@ -30,9 +30,6 @@ int		guess_flag(char c, t_conv *conv)
 		conv->long_afeg = 'L';
 	else if (c == '\'')
 		conv->apostrophe = '\'';
-	else
-		return (0);
-	return (1);
 }
 
 int		find_flags(char *str, t_conv *conv, va_list *list)
@@ -45,9 +42,9 @@ int		find_flags(char *str, t_conv *conv, va_list *list)
 		guess_flag(str[i], conv);
 		if ((ft_isdigit(str[i]) || str[i] == '*') && str[i] != '0'
 			&& str[i - 1] != '.')
-			i += resolve_wildcard_or_else(conv, str + i, list, false);
+			i += resolve_wildcard_or_else(conv, str + i, list, FALSE);
 		if (str[i] == '.')
-			i += resolve_wildcard_or_else(conv, str + i, list, true);
+			i += resolve_wildcard_or_else(conv, str + i, list, TRUE);
 		i++;
 	}
 	return (i);

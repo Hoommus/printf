@@ -6,11 +6,11 @@
 /*   By: vtarasiu <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/16 18:37:12 by vtarasiu          #+#    #+#             */
-/*   Updated: 2018/06/19 14:50:27 by vtarasiu         ###   ########.fr       */
+/*   Updated: 2018/07/01 15:06:20 by vtarasiu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ft_printf.h"
+#include "../include/ft_printf_internal.h"
 
 char	*itob(t_conv *conv, unsigned long long nbr)
 {
@@ -75,14 +75,4 @@ void	eval_n(t_conv *conv, va_list *arg)
 		d = va_arg(*arg, int *);
 	*((int *)d) = g_symbols;
 	conv->res = ft_strnew(0);
-}
-
-void	eval_f(t_conv *conv, va_list *arg)
-{
-	long double		d;
-
-	if (conv->modif & 8 || conv->long_afeg)
-		d = va_arg(*arg, long double);
-	else
-		d = va_arg(*arg, double);
 }

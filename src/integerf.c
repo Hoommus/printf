@@ -6,11 +6,11 @@
 /*   By: vtarasiu <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/14 17:43:24 by vtarasiu          #+#    #+#             */
-/*   Updated: 2018/06/07 16:49:22 by vtarasiu         ###   ########.fr       */
+/*   Updated: 2018/07/01 15:06:20 by vtarasiu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ft_printf.h"
+#include "../include/ft_printf_internal.h"
 
 char	*trimxx(t_conv *conv, char **str)
 {
