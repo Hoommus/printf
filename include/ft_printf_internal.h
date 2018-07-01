@@ -6,7 +6,7 @@
 /*   By: vtarasiu <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/07/01 15:02:40 by vtarasiu          #+#    #+#             */
-/*   Updated: 2018/07/01 15:29:35 by vtarasiu         ###   ########.fr       */
+/*   Updated: 2018/07/01 17:38:50 by vtarasiu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@
 
 # define BUFFER_SIZE 2048
 
-static int		g_symbols = 0;
+int				g_symbols;
 long long		g_written;
 int				g_output;
 int				g_error;
